@@ -5,7 +5,9 @@ import About from './components/About';
 import Sidebar from './components/Sidebar';
 import SectionA from './components/SectionA';
 import NewsTicker from './components/NewsTicker';
+import Nytimes from './components/Nytimes';
 import Parallax from 'react-rellax'
+import p5 from 'p5'
 
 class App extends Component{
   state = {
@@ -32,9 +34,11 @@ render(){
     <div className="App-header">
         <Parallax speed={1}>
     <NewsTicker />
+
   </Parallax>
     <Header/>
-  <Parallax speed={-4}>
+        <Nytimes />
+  <Parallax speed={3}>
     <About todos={this.state.todos}/>
   </Parallax>
     <SectionA/>
