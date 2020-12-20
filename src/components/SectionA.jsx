@@ -15,10 +15,12 @@ const SectionA = () => {
   )
 }
 const Wrapper = Styled.div`
+padding:0px;
+background-color: black;
 background-image: url('/laptop.png');
 background-repeat: no-repeat, repeat;
 background-color:#27184f;
-min-height: 99.9vh;
+min-height: 100vh;
 color:white;
 `
 

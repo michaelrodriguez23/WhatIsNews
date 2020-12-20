@@ -9,8 +9,10 @@ export default function Header() {
   };
 
   const MainImg = Styled.div`
+  background-color: black;
+  color:white;
     box-sizing: border-box;
-    width:20%;
+    width:100%;
     height:100%;
     display:flex;
 

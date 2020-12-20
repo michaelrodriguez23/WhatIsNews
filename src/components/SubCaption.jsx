@@ -15,11 +15,14 @@ class SubCaption extends Component {
   }
 }
 const Wrapper = Styled.div`
+background-color: black;
 color:white;
 font-size: calc(07px + 2vmin);
 padding: 1.5%;
 display: flex;
 flex-direction: center;
+color:#f56468;
+padding-left: 2%;
+display:flex;
 `
-
 export default SubCaption;

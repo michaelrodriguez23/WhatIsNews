@@ -18,7 +18,7 @@ class Sketch extends React.Component {
         // a p5 object "p"
         p.setup = () => {
             //Everyhting that normally happens in setup works
-            p.createCanvas(p.windowWidth,p.windowHeight/2)
+            p.createCanvas(p.windowWidth,p.windowHeight/2.5)
             // p.capture = p.createCapture(p.VIDEO);
 
         }
@@ -37,15 +37,14 @@ class Sketch extends React.Component {
 
 
           function drawCircles() {
-              p.background(245,100,104);
+               p.background(245,100,104);
               p.stroke(127, 19, 120);
-                p.circle(p.width / 2 -(x), p.height / 2, x);
+                // p.circle(p.width / 2 -(x), p.height / 2, x);
               p.fill(39,24,79);
               p.stroke(127, 63, 120);
-              p.circle(p.width / 2, p.height / 2,10);
-              p.circle(p.width / 2 -(x), p.height / 2, x);
-              p.circle(p.width / 2 , p.height / 2, x+30);
-              p.circle(p.width / 2 +(x), p.height / 2, x+90);
+              p.circle(p.width / 2 -(x), p.height / 2, x); // left
+              p.circle(p.width / 2, p.height / 2,x-(.8*x));// middle
+              p.circle(p.width / 2 +(x), p.height / 2, x+90);// right
               x+=1.5;
 
               console.log(x)

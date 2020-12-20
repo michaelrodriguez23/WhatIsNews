@@ -16,6 +16,7 @@ const NewsTicker = () => {
   )
 }
 const Wrapper = Styled.div`
+background-color: black;
 display:flex;
  padding: 0;
  border: 0;
@@ -47,7 +48,6 @@ border-bottom: 1.5px solid #f56468;
 `;
 
 const BigHeader = Styled.h1`
-
 font-size:1.8vw;
 color:#f56468;
 text-align: center;
