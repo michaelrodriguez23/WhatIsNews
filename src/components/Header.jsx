@@ -3,16 +3,15 @@ import Styled from 'styled-components'
 export default function Header() {
     return (
       <MainImg>
+  <p>hi</p>
       </MainImg>
     );
   };
 
-  const MainImg = Styled.img`
+  const MainImg = Styled.div`
     box-sizing: border-box;
-    width:40%;
+    width:20%;
     height:100%;
     display:flex;
-    justify-content:flex-end;
-    box-shadow: -3px 10px 25px rgb(90, 20, 100);
-    margin: 5% 30%;
+
   `;

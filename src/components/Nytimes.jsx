@@ -2,6 +2,7 @@
 import React from 'react'
 import p5 from 'p5'
 let x = 1;
+let capture;
 class Sketch extends React.Component {
     constructor(props) {
         super(props)
@@ -17,15 +18,18 @@ class Sketch extends React.Component {
         // a p5 object "p"
         p.setup = () => {
             //Everyhting that normally happens in setup works
-            p.createCanvas(p.windowWidth,p.windowHeight/1.9)
+            p.createCanvas(p.windowWidth,p.windowHeight/2)
+            // p.capture = p.createCapture(p.VIDEO);
+
         }
 
         p.draw = () => {
         drawCircles()
-        while(x>200){
-          p.fill(0, 102, 153);
-          p.text('word', 10, 60);
-        }
+
+        // p.capture.size(320, 240);
+        //
+        // p.image(capture, 0, 0, 320, 240);
+        // p.filter(p.INVERT);
 
 
     }
@@ -33,16 +37,17 @@ class Sketch extends React.Component {
 
 
           function drawCircles() {
-
-
               p.background(245,100,104);
+              p.stroke(127, 19, 120);
+                p.circle(p.width / 2 -(x), p.height / 2, x);
               p.fill(39,24,79);
               p.stroke(127, 63, 120);
-              p.circle(p.width / 2, p.height / 2, x);
+              p.circle(p.width / 2, p.height / 2,10);
               p.circle(p.width / 2 -(x), p.height / 2, x);
               p.circle(p.width / 2 , p.height / 2, x+30);
               p.circle(p.width / 2 +(x), p.height / 2, x+90);
               x+=1.5;
+
               console.log(x)
 
             }

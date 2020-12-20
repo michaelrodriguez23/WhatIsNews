@@ -7,7 +7,7 @@ const SectionA = () => {
   return (
     <Wrapper>
 
-        <Parallax speed={-3}>
+        <Parallax speed={0}>
     <img src={process.env.PUBLIC_URL+'/guy_on_phone.png'} alt=""/>
 </Parallax>
 
@@ -16,7 +16,7 @@ const SectionA = () => {
 }
 const Wrapper = Styled.div`
 background-image: url('/laptop.png');
-  background-repeat: no-repeat, repeat;
+background-repeat: no-repeat, repeat;
 background-color:#27184f;
 min-height: 99.9vh;
 color:white;

@@ -1,17 +1,25 @@
 import React, {Component} from 'react'
+import Styled from 'styled-components';
 
-class About extends Component {
+class SubCaption extends Component {
      render(){
   console.log(this.props.todos) // the state of app.js
     return (
-    <div className="brief">
+    <Wrapper>
       <h1 className="caption">Useful Idiots in the Digital Age</h1>
       <p>Do yourself a favor, and be safe out there !</p>
       <p>It isn't <em>easy</em> navigating this strange place.</p>
       <p>If we aren't careful, the world may end up an arms race</p>
-
-      </div>
+    </Wrapper>
     );
   }
-};
-export default About;
+}
+const Wrapper = Styled.div`
+color:white;
+font-size: calc(07px + 2vmin);
+padding: 1.5%;
+display: flex;
+flex-direction: center;
+`
+
+export default SubCaption;
