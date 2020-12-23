@@ -1,54 +1,45 @@
-
 import React from 'react'
 import p5 from 'p5'
 let x = 1;
-let capture;
+let url = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=dystopia&api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU'
+
+
 class Sketch extends React.Component {
     constructor(props) {
         super(props)
-        //p5 instance mode requires a reference on the DOM to mount the sketch
-        //So we use react's createRef function to give p5 a reference
         this.myRef = React.createRef()
     }
-
-    // This uses p5's instance mode for sketch creation and namespacing
     Sketch = (p) => {
-
-        // Native p5 functions work as they would normally but prefixed with
-        // a p5 object "p"
+        p.preload = () => {
+        }
         p.setup = () => {
-            //Everyhting that normally happens in setup works
             p.createCanvas(p.windowWidth,p.windowHeight/2.5)
-            // p.capture = p.createCapture(p.VIDEO);
+            p.loadJSON(url, gotData);
+        }
 
+        function gotData(data){
+          var articles = data.response.docs;
+
+          for(var i = 0; i < articles.length; i++){
+          p.createElement('h1', articles[i].headline.main);
+          p.createP(articles[i].snippet);
+          }
         }
 
         p.draw = () => {
         drawCircles()
 
-        // p.capture.size(320, 240);
-        //
-        // p.image(capture, 0, 0, 320, 240);
-        // p.filter(p.INVERT);
-
-
     }
 
-
-
           function drawCircles() {
-               p.background(245,100,104);
+              p.background(245,100,104);
               p.stroke(127, 19, 120);
-                // p.circle(p.width / 2 -(x), p.height / 2, x);
               p.fill(39,24,79);
               p.stroke(127, 63, 120);
               p.circle(p.width / 2 -(x), p.height / 2, x); // left
               p.circle(p.width / 2, p.height / 2,x-(.8*x));// middle
               p.circle(p.width / 2 +(x), p.height / 2, x+90);// right
               x+=1.5;
-
-              console.log(x)
-
             }
 
           }
