@@ -1,56 +1,61 @@
 import React from 'react'
 import p5 from 'p5'
 let x = 1;
-let input, buton;
+let input,
+  button,
+  query,
+  filter,
+  greeting;
 
-let url = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?q=dystopia&api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU'
-let query;
-let filter;
-let greeting;
+
+let url = 'https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU'
 
 class Sketch extends React.Component {
   constructor(props) {
     super(props)
     this.myRef = React.createRef()
   }
-  Sketch = (p) => {
 
+  Sketch = (p) => {
     p.preload = () => {
-        // p.loadJSON(url, gotData);
+      p.loadJSON(url, gotData);
+    }
+    const createSearch = () => {
+      input = p.createInput('', 'text');
+      greeting = p.createElement('h1', 'What is the latest jargon?');
+      greeting.position(1100, -20);
+      button = p.createButton('submit');
+      input.position(800, 60);
+      button.position(input.x + input.width, 60);
+      button.mousePressed(getInput);
     }
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight / 2.5)
-          let input = p.createInput('','text');
-        let  button = p.createButton('submit');
-          button.position(input.x + input.width, 60);
-          input.position(400,60);
-          input.input(getInput)
-          button.mousePressed(getInput);
+      p.createCanvas(p.windowWidth, p.windowHeight / 2.5);
+      // createSearch()
     }
 
     function getInput() {
-          let query = this.value();
-            console.log(query);
-            greeting = p.createElement('h3', 'What is a hot jargon?');
-            greeting.position(0,0);
 
-            p.textAlign(p.center);
-            p.textSize(50);
-            greeting.html(query);
-            greeting.clear();
+      let query = this.value();
+
 
     }
 
-
     function gotData(data) {
-      var articles = data.response.docs;
-      for (var i = 0; i < articles.length; i++) {
-        p.createElement('h1', articles[i].headline.main);
-        p.createP(articles[i].snippet);
-      }
+   var results = data.results;
+
+      for (var i = 0; i < results.length/3; i++) {
+        const headline = p.createElement('p','  : ' + results[i].title);
+        p.text('hi')
+        p.textAlign(p.center);
+        p.textSize(130);
+         // p.createP('img' results[i].des_facet);
+
+}
     }
 
     p.draw = () => {
+
       drawCircles()
     }
 
@@ -71,8 +76,7 @@ class Sketch extends React.Component {
   }
 
   render() {
-    return (
-    <div ref={this.myRef}></div>)
+    return (<div ref={this.myRef}></div>)
   }
 }
 
