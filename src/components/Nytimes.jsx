@@ -59,6 +59,8 @@ class Sketch extends React.Component {
         headline ='';
         for (let i = 0; i < results.length / 3; i++) {
          headline = p.createElement('h4', '   ' + results[i].title);
+        const caption = p.createElement('p', results[i].des_facet);
+        caption.style('font-size:18px')
         }
       }
     }
