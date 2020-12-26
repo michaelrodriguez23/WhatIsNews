@@ -25,11 +25,16 @@ class Sketch extends React.Component {
       results;
 
     p.preload = () => {
-      emailButton.position(300, 0);
-      fbButton.position(400, 0);
+      const question = p.createElement('h3','Click to see how consumption of news differs between email and facebook!');
+      question.center();
+      emailButton.position(600,100);
+      fbButton.position(800,100);
+      fbButton.style('background-color:grey;', 'color:white')
+      emailButton.style('background-color:grey;', 'color:white')
 
       emailButton.mousePressed(loadEmailResults)
-      fbButton.mousePressed(loadFbResults)
+      fbButton.mousePressed(loadFbResults);
+
 
     }
 
@@ -46,6 +51,8 @@ class Sketch extends React.Component {
 
     function gotData(data) {
       results = data.results;
+      const resultResponse = p.createElement('h2', 'When you rob the NYTimes of their layout, the raw data reveils the obscure ');
+      resultResponse.style('color:purple')
       getResults();
 
       function getResults() {
@@ -56,10 +63,9 @@ class Sketch extends React.Component {
       }
     }
 
-
-
     p.draw = () => {
-      drawCircles()
+
+      // drawCircles()
     }
 
     function drawCircles() {
