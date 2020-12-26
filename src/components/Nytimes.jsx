@@ -1,14 +1,6 @@
 import React from 'react'
 import p5 from 'p5'
-let x = 1;
-let input,
-  button,
-  query,
-  filter,
-  greeting;
 
-
-let url = 'https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU'
 
 class Sketch extends React.Component {
   constructor(props) {
@@ -17,45 +9,56 @@ class Sketch extends React.Component {
   }
 
   Sketch = (p) => {
+    const emailButton = p.createButton('Email');
+    const fbButton = p.createButton('Facebook');
+    let  headline = p.createElement('h4', );
+    let x = 1;
+    let emailedPeriod = 1; // 7, 30 most emailed
+    let apiKey = 'api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU'
+    let mostEmailed = 'https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?' + apiKey
+    let mostFacebooked = 'https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?' + apiKey
+    let input,
+      button,
+      query,
+      filter,
+      greeting,
+      results;
+
     p.preload = () => {
-      p.loadJSON(url, gotData);
+      emailButton.position(300, 0);
+      fbButton.position(400, 0);
+
+      emailButton.mousePressed(loadEmailResults)
+      fbButton.mousePressed(loadFbResults)
+
     }
-    const createSearch = () => {
-      input = p.createInput('', 'text');
-      greeting = p.createElement('h1', 'What is the latest jargon?');
-      greeting.position(1100, -20);
-      button = p.createButton('submit');
-      input.position(800, 60);
-      button.position(input.x + input.width, 60);
-      button.mousePressed(getInput);
-    }
+
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight / 2.5);
-      // createSearch()
+
     }
-
-    function getInput() {
-
-      let query = this.value();
-
-
+    function loadFbResults(){
+      p.loadJSON(mostFacebooked, gotData);
+    }
+    function loadEmailResults(){
+      p.loadJSON(mostEmailed, gotData);
     }
 
     function gotData(data) {
-   var results = data.results;
+      results = data.results;
+      getResults();
 
-      for (var i = 0; i < results.length/3; i++) {
-        const headline = p.createElement('p','  : ' + results[i].title);
-        p.text('hi')
-        p.textAlign(p.center);
-        p.textSize(130);
-         // p.createP('img' results[i].des_facet);
-
-}
+      function getResults() {
+        headline ='';
+        for (let i = 0; i < results.length / 3; i++) {
+         headline = p.createElement('h4', '   ' + results[i].title);
+        }
+      }
     }
 
-    p.draw = () => {
 
+
+    p.draw = () => {
       drawCircles()
     }
 

@@ -3,7 +3,6 @@ import Styled from 'styled-components'
 export default function Header() {
     return (
       <MainImg>
-  <p>hi</p>
       </MainImg>
     );
   };
