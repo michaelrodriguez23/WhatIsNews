@@ -23,6 +23,10 @@ class Sketch extends React.Component {
       filter,
       greeting,
       results;
+    let queue = [];
+
+    let s = '';
+
 
     p.preload = () => {
       const question = p.createElement('h3','Click to see how consumption of news differs between email and facebook!');
@@ -51,19 +55,34 @@ class Sketch extends React.Component {
 
     function gotData(data) {
       results = data.results;
-      const resultResponse = p.createElement('h2', 'When you rob the NYTimes of their layout, the raw data reveils the obscure ');
+      const resultResponse = p.createElement('h2', 'When you remove the NYTimes of their layout, the raw data reveils the obscure ');
       resultResponse.style('color:purple')
       getResults();
+    }
 
-      function getResults() {
-        headline ='';
-        for (let i = 0; i < results.length / 3; i++) {
-         headline = p.createElement('h4', '   ' + results[i].title);
-        const caption = p.createElement('p', results[i].des_facet);
-        caption.style('font-size:18px')
-        }
+    function getResults() {
+      headline ='';
+      for (let i = 0; i < results.length / 3; i++) {
+        p.append(queue, results[i].title);
+        s = results[i];
+        printHeadline();
       }
     }
+        function printHeadline () {
+
+          for(let i = 0; i < s.length(); i++){
+            console.log('hey');
+            let c = s.charAt(i);
+            p.textSize(p.random(12,200));
+            p.text(c, x, 300);
+            x = x + p.textWidth(c);
+          }
+        }
+
+         // headline = p.createElement('h4', '   ' + results[i].title);
+
+        // const caption = p.createElement('p', results[i].des_facet);
+        // caption.style('font-size:18px')
 
     p.draw = () => {
 
