@@ -65,30 +65,19 @@ class Sketch extends React.Component {
         p.append(queue, results[i].title);
         s = results[i];
         headline = p.createElement('h4', '   ' + results[i].title);
-           const caption = p.createElement('p', results[i].des_facet);
-           caption.style('font-size:18px')
+        const caption = p.createElement('p', results[i].des_facet);
+        caption.style('font-size:18px');
 
         for(let i = 0; i < s.length; i++){
           let c = s.charAt(i);
           p.textSize(p.random(12,200));
           p.text(c, x, 300);
           x = x + p.textWidth(c);
-
       }
     }
-        function printHeadline () {
-
-          }
-        }
-
-
-
-
-
-
+  }
     p.draw = () => {
-
-      drawCircles()
+      drawCircles();
     }
 
     function drawCircles() {
