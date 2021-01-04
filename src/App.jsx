@@ -14,14 +14,15 @@ class App extends Component{
 render(){
   return (
     <div className="App-header">
-        <Parallax speed={13}>
+        <Parallax speed={4}>
     <NewsTicker />
   </Parallax>
     <Header/>
-      <Parallax speed={-10}>
+      <Parallax speed={4}>
         <Nytimes />
-    <SubCaption todos={this.state.todos}/>
-  </Parallax>
+         <SubCaption />
+        </Parallax>
+
     <SectionA/>
     </div>
 
