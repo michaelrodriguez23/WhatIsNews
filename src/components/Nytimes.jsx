@@ -4,11 +4,12 @@ import p5 from 'p5'
 class Sketch extends React.Component {
   constructor(props) {
     super(props)
-    this.myRef = React.createRef()
+    this.myRef = React.createRef();
+
   }
 
   Sketch = (p) => {
-    
+
     const emailButton = p.createButton('Email');
     const fbButton = p.createButton('Facebook');
     let headline;
@@ -24,6 +25,7 @@ class Sketch extends React.Component {
             greeting,
             results;
           let queue = [];
+           let keywords = [];
 
           let s = '';
 
@@ -58,28 +60,29 @@ class Sketch extends React.Component {
             resultResponse.style('padding:0px;')
 
             getResults();
+          console.log(keywords)
           }
 
           function getResults() {
-            headline = '';
             for (let i = 0; i < results.length / 2; i++) {
+             const strings = results[i].des_facet;
               p.append(queue, results[i].title);
-              s = results[i].title;
-              let length = s.length;
               headline = p.createElement('p', i + 1 + '. ' + results[i].title);
               headline.style('text-align:center;')
-              // const caption = p.createElement('p', results[i].des_facet);
-              // caption.style('font-size:18px');
 
-
-              for (let i = 0; i < length; i++) {
-                let c = s.charAt(i);
-                p.textSize(p.random(12, 200));
-                p.text(c, x, 300)
-                x = x + p.textWidth(c);
-              }
+                for(let j = 0; j<results.length/2;j++){
+                  if(results[i].des_facet[j]){
+              keywords.push(results[i].des_facet[j]);
             }
+               // const caption = p.createElement('p', results[i].des_facet[j]);
+               //
+               // caption.style('font-size:18px');
+               // caption.style('text-align:center;');
+             }
+            }
+
           }
+
           p.draw = () => {
             // drawCircles();
           }
@@ -98,10 +101,16 @@ class Sketch extends React.Component {
         }
         componentDidMount() {
           this.myP5 = new p5(this.Sketch, this.myRef.current)
+
         }
 
         render() {
-          return (<div ref={this.myRef}></div>)
+          return (
+            <div ref={this.myRef}>
+            <h1 className="App-title"> {this.props.title}</h1>
+            <div>{JSON.stringify(this.props.myObj)}</div>
+            </div>
+          )
         }
       }
 
