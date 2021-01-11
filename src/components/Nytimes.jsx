@@ -1,6 +1,6 @@
 import React from 'react'
 import p5 from 'p5'
-
+// make a flow chart
 class Sketch extends React.Component {
 
   state = {
@@ -25,23 +25,24 @@ class Sketch extends React.Component {
     let mostFacebooked = 'https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?' + apiKey
     let queue = [];
     let keywords = [];
-    let count = this.cou
+    let count = this.count
     let s = '';
     let strings;
     let lead;
-    let length;
     let input,
       button,
       query,
       filter,
       greeting,
-      results;
+      results,
+      y,
+      line;
 
     p.preload = () => {
       // Preloading the section with question & buttons
       question.style('text-align:center')
       question.center();
-      // question.position(p.windowWidth/2,p.windowHeight/2);
+      question.position(p.windowWidth / 2, p.windowHeight / 2);
       emailButton.position(p.windowWidth / 2, p.windowHeight / 4);
       fbButton.position(p.windowWidth / 2 - 100, p.windowHeight / 4);
       fbButton.style('background-color:grey;', 'color:white')
@@ -51,74 +52,68 @@ class Sketch extends React.Component {
 
     }
     p.draw = () => {
-      drawCircles();
-          printHeadlines();
+      // drawCircles();
     }
 
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight / 2);
-
     }
 
     function gotData(data) {
       // retrieving data from the NYTIMES API from both most emailed + most shared on fb
       results = data.results;
       getHeadlines();
+      printLead();
       getKeywords();
-
+      printHeadlines();
     }
 
-    function clearHeadlines() {
-      /*  for (let i = 0; i < results.length / 2; i++) {
-
-            } */
+    // Functions
+    // --------------------------------------------------
+    function loadFbResults() {
+      x=0;
+       y = p.windowWidth/2;
+      title = 'The most shared articles on Facebook are. ';
+      p.loadJSON(mostFacebooked, gotData);
+    }
+    function loadEmailResults() {
+       y = p.windowWidth/6;
+      title = 'The most emailed articles. ';
+      p.loadJSON(mostEmailed, gotData);
     }
     function getHeadlines() {
       //adding the headlines to the end of the queue [] from the NYTIMES api
-      for (let i = 0; i < results.length / 2; i++) {
+      for (let i = 0; i < 10; i++) {
         p.append(queue, results[i].title);
       }
-      length = results.length;
-      p.draw()
+    }
+
+    function printLead() {
+      lead = p.createElement('h2', title);
+      p.fill(255)
+      lead.style('text-align:center;')
+      lead.style('padding:0px;');
     }
 
     function printHeadlines() {
-      lead = p.createElement('h2', title);
-      lead.style('text-align:center;')
-      lead.style('padding:0px;');
-      p.background('white')
-      for (let i = 0; i < length / 2; i++) {
-        p.textSize(20);
-        p.text(queue, 100, 200);
-        p.fill(200);
-        headline = p.createP(i + 1 + '. ' + queue[i]);
-        headline.style('text-align:center;');
+      p.fill(255);
+      for (let i = 0; i < 10; i++) {
+        p.textSize(16);
+        x = x + 30;
+        line = p.text([i + 1] + '. ' + queue[i], y, x);
       }
     };
 
     function getKeywords() {
-      // Iterating through each article, and inside the nested array to extract keywords.
-      // adding it to a new array if it is defined
+      // Iterating through each article, and inside the nested array.
       for (let i = 0; i < results.length / 2; i++) {
         strings = results[i].des_facet;
         for (let j = 0; j < results.length / 2; j++) {
           if (results[i].des_facet[j]) {
             keywords.push(results[i].des_facet[j]);
           }
-
         }
       }
-
-    }
-    function loadFbResults() {
-      clearHeadlines();
-      title = 'The most shared articles on Facebook are. ';
-      p.loadJSON(mostFacebooked, gotData);
-    }
-    function loadEmailResults() {
-      title = 'The most emailed articles. ';
-
-      p.loadJSON(mostEmailed, gotData);
     }
 
     function drawCircles() {
@@ -129,8 +124,8 @@ class Sketch extends React.Component {
       p.circle(p.width / 2 - (x), p.height / 2, x); // left
       p.circle(p.width / 2, p.height / 2, x - (.8 * x)); // middle
       p.circle(p.width / 2 + (x), p.height / 2, x + 90); // right
-      x += 1.5;
     }
+    /*
     const checkVal = () => {
       if (this.state.count == 55) {
         console.log('is the same')
@@ -139,6 +134,8 @@ class Sketch extends React.Component {
         console.log(count);
       }
     }
+  }
+  */
   }
   componentDidMount() {
     this.myP5 = new p5(this.Sketch, this.myRef.current)
