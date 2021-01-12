@@ -64,14 +64,15 @@ class Sketch extends React.Component {
       results = data.results;
       getHeadlines();
       printLead();
-      getKeywords();
       printHeadlines();
+      getKeywords();
+
     }
 
     // Functions
     // --------------------------------------------------
     function loadFbResults() {
-      x=0;
+          x=0;
        y = p.windowWidth/2;
       title = 'The most shared articles on Facebook are. ';
       p.loadJSON(mostFacebooked, gotData);
@@ -84,7 +85,7 @@ class Sketch extends React.Component {
     function getHeadlines() {
       //adding the headlines to the end of the queue [] from the NYTIMES api
       for (let i = 0; i < 10; i++) {
-        p.append(queue, results[i].title);
+        queue[i] = results[i].title;
       }
     }
 
