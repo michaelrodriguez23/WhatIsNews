@@ -11,7 +11,7 @@ class Sketch extends React.Component {
   }
   Sketch = (p) => {
 
-    let title = "Information Shared Via the New York Times";
+    let title = "New York Times Transmission of Articles";
     const emailButton = p.createButton("Email");
     const fbButton = p.createButton("Facebook");
     const question = p.createElement("h1", title);
@@ -35,15 +35,17 @@ class Sketch extends React.Component {
       results,
       y,
       line;
-    let img;
+    let mark;
+    let mickey;
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight / 1.5);
 
     };
     p.preload = () => {
       // Preloading the section with question & buttons
-      img = p.loadImage("mark.jpg");
-      question.style("text-align:center");
+      mark = p.loadImage("mark.jpg");
+      mickey = p.loadImage("mickey.jpg");
+      question.style("text-align:left");
       question.center();
       fbButton.style("background-color:'white';", "color:'green'");
       emailButton.style("background-color:grey;", "color:white");
@@ -57,7 +59,9 @@ class Sketch extends React.Component {
     };
 
     p.draw = () => {
-      p.image(img, 600, 15, 150, 150);
+      p.image(mark, 1300, 290, 150, 150);
+      p.image(mickey, 300, 15, 150, 150);
+
       // drawCircles();
     };
 

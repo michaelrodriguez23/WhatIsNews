@@ -16,8 +16,8 @@ const SectionA = () => {
 }
 const Wrapper = Styled.div`
 background-color: black;
-background-image: url('/laptop.png');
-background-repeat: no-repeat, repeat;
+background-image: url('/computer_rave.png');
+background-repeat: repeat;
 background-color:#27184f;
 min-height: 100vh;
 color:white;
