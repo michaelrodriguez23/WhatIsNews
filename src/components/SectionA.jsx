@@ -7,8 +7,8 @@ const SectionA = () => {
   return (
     <Wrapper>
 
-        <Parallax speed={40}>
-    <img src={process.env.PUBLIC_URL+'/guy_on_phone.png'} alt=""/>
+        <Parallax speed={-4}>
+    <img src={process.env.PUBLIC_URL+'/mickey.jpg'} alt=""/>
 </Parallax>
 
     </Wrapper>

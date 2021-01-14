@@ -15,7 +15,7 @@ class App extends Component {
         <NewsTicker/>
       </Parallax>
       <Header/>
-      <Parallax speed={4}>
+      <Parallax speed={6}>
           <Nytimes />
         <SubCaption/>
       </Parallax>

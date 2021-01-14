@@ -1,5 +1,6 @@
 import React from "react";
 import p5 from "p5";
+import Parallax from 'react-rellax'
 // make a flow chart
 class Sketch extends React.Component {
   state = {
@@ -10,11 +11,11 @@ class Sketch extends React.Component {
     this.myRef = React.createRef();
   }
   Sketch = (p) => {
-
+let z = 0;
     let title = "New York Times Transmission of Articles";
     const emailButton = p.createButton("Email");
     const fbButton = p.createButton("Facebook");
-    const question = p.createElement("h1", title);
+    let sec = p.second();
     let headline = p.createElement("p", "");
     let x = 1;
     let emailedPeriod = 1; // 7, 30 most emailed
@@ -38,20 +39,17 @@ class Sketch extends React.Component {
     let mark;
     let mickey;
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight / 1.5);
+      p.createCanvas(p.windowWidth, p.windowHeight /1.65);
 
     };
     p.preload = () => {
       // Preloading the section with question & buttons
-      mark = p.loadImage("mark.jpg");
-      mickey = p.loadImage("mickey.jpg");
-      question.style("text-align:left");
-      question.center();
+      mark = p.loadImage("mark.png");
+      mickey = p.loadImage("mickey.png");
       fbButton.style("background-color:'white';", "color:'green'");
       emailButton.style("background-color:grey;", "color:white");
-      question.position(p.windowWidth / 2, p.windowHeight / 2);
-      emailButton.position(p.windowWidth / 2 - 200, p.windowHeight / 4);
-      fbButton.position(p.windowWidth / 2 - 130, p.windowHeight / 6 + 40);
+      emailButton.position(p.windowWidth / 2 , p.windowHeight / 2);
+      fbButton.position(p.windowWidth / 2-100, p.windowHeight / 2 );
 
       emailButton.mousePressed(loadEmailResults);
       fbButton.mousePressed(loadFbResults);
@@ -59,10 +57,10 @@ class Sketch extends React.Component {
     };
 
     p.draw = () => {
-      p.image(mark, 1300, 290, 150, 150);
-      p.image(mickey, 300, 15, 150, 150);
 
-      // drawCircles();
+
+      p.image(mark,p.windowWidth-350,150, 400, 400);
+       p.image(mickey,50, 0,250,250);
     };
 
     function gotData(data) {
@@ -77,9 +75,12 @@ class Sketch extends React.Component {
     // Functions
     // --------------------------------------------------
     function loadFbResults() {
+      title = "The most shared articles on Facebook are"
+
       x = 0;
-      y = p.windowWidth / 2;
-      title = "The most shared articles on Facebook are. ";
+      y = p.windowWidth / 2.9;
+
+
       p.loadJSON(mostFacebooked, gotData);
     }
     function loadEmailResults() {
@@ -103,25 +104,28 @@ class Sketch extends React.Component {
     }
 
     function printHeadlines() {
-      // lead = p.createElement("h4", title);
-      console.log(x)
-      console.log(y)
-      console.log(p.windowWidth)
-
+        let s = p.second();
       p.fill(255);
       p.textSize(30);
       p.text('title', x, y )
-
       for (let i = 0; i < 10; i++) {
-        p.textSize(16);
+        p.textSize(14);
         x = x + 30;
+
         line = p.text([i + 1] + ". " + queue[i], y, x);
+      
         if (i % 2 === 0 || i === 0) {
+          s = 0;
           p.fill(245, 100, 104);
         } else {
           p.fill(255);
         }
+        console.log(s)
+
       }
+    }
+    function setDelay(){
+      this.i = 0;
     }
 
     function getKeywords() {
@@ -134,28 +138,9 @@ class Sketch extends React.Component {
           }
         }
       }
+      console.log(keywords)
     }
 
-    function drawCircles() {
-      p.background(245, 100, 104);
-      p.stroke(127, 19, 120);
-      p.fill(39, 24, 79);
-      p.stroke(127, 63, 120);
-      p.circle(p.width / 2 - x, p.height / 2, x); // left
-      p.circle(p.width / 2, p.height / 2, x - 0.8 * x); // middle
-      p.circle(p.width / 2 + x, p.height / 2, x + 90); // right
-    }
-    /*
-    const checkVal = () => {
-      if (this.state.count == 55) {
-        console.log('is the same')
-      } else {
-        count = 2;
-        console.log(count);
-      }
-    }
-  }
-  */
   };
   componentDidMount() {
     this.myP5 = new p5(this.Sketch, this.myRef.current);

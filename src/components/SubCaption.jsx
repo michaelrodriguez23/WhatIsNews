@@ -6,10 +6,10 @@ class SubCaption extends Component {
   console.log(this.props.todos) // the state of app.js
     return (
     <Wrapper>
-      <h1 className="caption">Useful Idiots in the Digital Age</h1>
-      <p>Do yourself a favor, and be safe out there !</p>
-      <p>It isn't <em>easy</em> navigating this strange place.</p>
-      <p>If we aren't careful, the world may end up an arms race</p>
+      <h1 className="caption">Circulation of News Can Vary Through The Web</h1>
+      <p>How does the top ten articles shared online </p>
+      <p>{`From "The New York Times" compare at face value`}</p>
+      <p> When shared through facebook or through email</p>
     </Wrapper>
     );
   }
