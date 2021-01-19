@@ -7,6 +7,8 @@ class Sketch extends React.Component {
     this.myRef = React.createRef();
   }
   Sketch = (p) => {
+    let height = p.windowHeight;
+    let width = p.window;
     let title = "New York Times Transmission of Articles";
     const emailButton = p.createButton("Email");
     const fbButton = p.createButton("Facebook");
@@ -22,6 +24,7 @@ class Sketch extends React.Component {
     let strings;
     let lead;
     let i = 0;
+    let flag = true;
     let button,
       results,
       y,
@@ -30,7 +33,7 @@ class Sketch extends React.Component {
     let mickey;
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight / 1.65);
-      p.frameRate(60);
+
     };
     p.preload = () => {
       // Preloading the section with question & buttons
@@ -40,34 +43,55 @@ class Sketch extends React.Component {
       emailButton.style("background-color:grey;", "color:white");
       emailButton.position(p.windowWidth / 2, p.windowHeight / 2);
       fbButton.position(p.windowWidth / 2 - 100, p.windowHeight / 2);
-
       emailButton.mousePressed(loadEmailResults);
       fbButton.mousePressed(loadFbResults);
 
     };
 
     p.draw = () => {
-      p.image(mark, p.windowWidth - 350, 150, 400, 400);
+          p.loop();
+      aboveMickey()
+
+      aboveMark()
       p.image(mickey, 50, 0, 250, 250);
+      p.image(mark, p.windowWidth - 350, 150, 400, 400);
+
     };
 
     function gotData(data) {
+      i = 0;
       // retrieving data from the NYTIMES API from both most emailed + most shared on fb
       results = data.results;
       getHeadlines();
-       // printLead();
+      // printLead();
       printQueue();
       // getKeywords();
+    }
+    function aboveMickey() {
+          p.loop();
+      if (p.mouseX > 70 && p.mouseX < 290 && p.mouseY > 5 && p.mouseY < 234) {
+        loadEmailResults();
+        p.tint(0, 0, 0, 210);
+        p.noLoop();
+      }
+    }
+    function aboveMark() {
+          p.text(title, 500, 500);
+          p.loop();
+      if (p.mouseX > 1000 && p.mouseX < 1400 && p.mouseY > 210 && p.mouseY < 530) {
+        loadFbResults();
+        console.log('mark')
+      p.tint(0, 0, 0, 210);
+        p.noLoop();
+      }
     }
 
     // Functions
     // --------------------------------------------------
     function loadFbResults() {
       title = "The most shared articles on Facebook are"
-
       x = 0;
       y = p.windowWidth / 2.9;
-
       p.loadJSON(mostFacebooked, gotData);
     }
     function loadEmailResults() {
@@ -93,27 +117,25 @@ class Sketch extends React.Component {
 
       p.fill(255);
       p.textSize(30);
-      // p.text('title', x, y);
+
       p.textSize(14);
 
-      if (i < 10) {
-        console.log(i,p.millis())
+      if (i < 10 && flag) {
+        // console.log(i,p.millis(),flag)
         x = x + 20;
 
-            if (i % 2 === 0 || i === 0) {
-              s = 0;
-              p.fill(245, 100, 104);
-            } else {
-              p.fill(255);
-            }
-                line = p.text((i + 1) + ". " + queue[i], y, x);
+        if (i % 2 === 0 || i === 0) {
+          s = 0;
+          p.fill(245, 100, 104);
+        } else {
+          p.fill(255);
+        }
+        line = p.text((i + 1) + ". " + queue[i], y, x);
         ++i;
       }
       let interval = setTimeout(printQueue, 300);
 
     }
-
-
 
     function getKeywords() {
       // Iterating through each article, and inside the nested array.
