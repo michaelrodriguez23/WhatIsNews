@@ -1,33 +1,26 @@
 import React from "react";
 import p5 from "p5";
-// make a flow chart
+
 class Sketch extends React.Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
   }
   Sketch = (p) => {
-    let height = p.windowHeight;
-    let width = p.window;
-    let title = "New York Times Transmission of Articles";
-    const emailButton = p.createButton("Email");
-    const fbButton = p.createButton("Facebook");
-    let headline = p.createElement("p", "");
-    let x = 1;
-    let s;
-    let emailedPeriod = 1; // 7, 30 most emailed
+    let queue = [];
+    let keywords = [];
     let apiKey = "api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU";
     let mostEmailed = "https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?" + apiKey;
     let mostFacebooked = "https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?" + apiKey;
-    let queue = [];
-    let keywords = [];
+    let title = "New York Times Transmission of Articles";
+    let headline = p.createElement("p", "");
+    let x = 1;
+    let y;
+    let i = 0;
+    let s;
     let strings;
     let lead;
-    let i = 0;
-    let flag = true;
-    let button,
-      results,
-      y,
+    let results,
       line;
     let mark;
     let mickey;
@@ -39,51 +32,40 @@ class Sketch extends React.Component {
       // Preloading the section with question & buttons
       mark = p.loadImage("mark.png");
       mickey = p.loadImage("mickey.png");
-      fbButton.style("background-color:'white';", "color:'green'");
-      emailButton.style("background-color:grey;", "color:white");
-      emailButton.position(p.windowWidth / 2, p.windowHeight / 2);
-      fbButton.position(p.windowWidth / 2 - 100, p.windowHeight / 2);
-      emailButton.mousePressed(loadEmailResults);
-      fbButton.mousePressed(loadFbResults);
 
     };
 
     p.draw = () => {
-          p.loop();
-      aboveMickey()
-
-      aboveMark()
-      p.image(mickey, 50, 0, 250, 250);
+      overMark();
+      overMickey();
       p.image(mark, p.windowWidth - 350, 150, 400, 400);
+      p.image(mickey, 50, 0, 250, 250);
 
     };
 
     function gotData(data) {
-      i = 0;
       // retrieving data from the NYTIMES API from both most emailed + most shared on fb
       results = data.results;
       getHeadlines();
-      // printLead();
       printQueue();
       // getKeywords();
     }
-    function aboveMickey() {
-          p.loop();
-      if (p.mouseX > 70 && p.mouseX < 290 && p.mouseY > 5 && p.mouseY < 234) {
+    function overMickey() {
+      if (p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3) {
         loadEmailResults();
-        p.tint(0, 0, 0, 210);
+        tintOtherImg();
         p.noLoop();
       }
     }
-    function aboveMark() {
-          p.text(title, 500, 500);
-          p.loop();
-      if (p.mouseX > 1000 && p.mouseX < 1400 && p.mouseY > 210 && p.mouseY < 530) {
+    function overMark() {
+      // p.text(title, 500, 500);
+      p.loop();
+      if (p.mouseX > p.width / 1.1 && p.mouseY > p.height / 3 && p.mouseY < p.height) {
         loadFbResults();
-        console.log('mark')
-      p.tint(0, 0, 0, 210);
+        tintOtherImg()
         p.noLoop();
       }
+
     }
 
     // Functions
@@ -91,14 +73,22 @@ class Sketch extends React.Component {
     function loadFbResults() {
       title = "The most shared articles on Facebook are"
       x = 0;
-      y = p.windowWidth / 2.9;
-      p.loadJSON(mostFacebooked, gotData);
+      y = p.windowWidth / 2;
+      fetch(mostFacebooked)
+      .then(response => response.json())
+      .then(gotData)
+       .catch(err => console.log('error communicating with api'))
     }
     function loadEmailResults() {
       x = p.windowHeight / 5;
       y = p.windowWidth / 8;
-      title = "The most emailed articles. ";
-      p.loadJSON(mostEmailed, gotData);
+      title = "error communicating with api";
+
+      fetch(mostEmailed)
+      .then(response => response.json())
+      .then(gotData)
+       .catch(err => console.log('error'))
+
     }
     function getHeadlines() {
       //adding the headlines to the end of the queue [] from the NYTIMES api
@@ -107,23 +97,14 @@ class Sketch extends React.Component {
       }
     }
 
-    // function printLead() {
-    //   p.fill(255);
-    //   lead.style("text-align:right;");
-    //   lead.style("padding:10px;");
-    // }
-
     function printQueue() {
-
       p.fill(255);
       p.textSize(30);
-
       p.textSize(14);
 
-      if (i < 10 && flag) {
-        // console.log(i,p.millis(),flag)
-        x = x + 20;
+      if (i < 10) {
 
+        x = x + 20;
         if (i % 2 === 0 || i === 0) {
           s = 0;
           p.fill(245, 100, 104);
@@ -133,8 +114,7 @@ class Sketch extends React.Component {
         line = p.text((i + 1) + ". " + queue[i], y, x);
         ++i;
       }
-      let interval = setTimeout(printQueue, 300);
-
+      let interval = setTimeout(printQueue, 200);
     }
 
     function getKeywords() {
@@ -148,6 +128,9 @@ class Sketch extends React.Component {
         }
       }
       console.log(keywords)
+    }
+    function tintOtherImg() {
+      p.tint(0, 0, 0, 180);
     }
 
   };
