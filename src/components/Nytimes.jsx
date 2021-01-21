@@ -10,111 +10,157 @@ class Sketch extends React.Component {
     let queue = [];
     let keywords = [];
     let apiKey = "api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU";
-    let mostEmailed = "https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?" + apiKey;
-    let mostFacebooked = "https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?" + apiKey;
+    let i = 0;
+    let y;
+    let s;
+    let emailButton
     let title = "New York Times Transmission of Articles";
     let headline = p.createElement("p", "");
-    let x = 1;
-    let y;
-    let i = 0;
-    let s;
+
     let strings;
     let lead;
     let results,
       line;
     let mark;
     let mickey;
+    let facebookFlag = false;
+    let emailFlag = false;
+    let markImg = {
+      img: mark,
+      x: p.windowWidth - 350,
+      y: 150,
+      width: 400,
+      height: 400
+    };
+
+    let mickeyImg = {
+      img: mickey,
+      x: 50,
+      y: 0,
+      width: 250,
+      height: 250
+    };
+
+    let facebookRes = {
+      x: 1,
+      y,
+      title: "The most shared articles on Facebook are",
+      apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?" + apiKey,
+      img: "mark.png",
+      results: [],
+      queue: []
+    };
+
+    let emailRes = {
+      x: 1,
+      y,
+      title: "The most emailed articles are",
+      apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?" + apiKey,
+      img: "mickey.png",
+      results: [],
+      queue: []
+    };
+
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight / 1.65);
-
     };
     p.preload = () => {
       // Preloading the section with question & buttons
-      mark = p.loadImage("mark.png");
-      mickey = p.loadImage("mickey.png");
-
+      mickey = p.loadImage(emailRes.img);
+      mark = p.loadImage(facebookRes.img);
     };
 
     p.draw = () => {
-      overMark();
-      overMickey();
-      p.image(mark, p.windowWidth - 350, 150, 400, 400);
-      p.image(mickey, 50, 0, 250, 250);
-
+      overImage();
+      p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
+      p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
     };
 
-    function gotData(data) {
-      // retrieving data from the NYTIMES API from both most emailed + most shared on fb
-      results = data.results;
-      getHeadlines();
-      printQueue();
-      // getKeywords();
-    }
-    function overMickey() {
-      if (p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3) {
-        loadEmailResults();
-        tintOtherImg();
-        p.noLoop();
-      }
-    }
-    function overMark() {
-      // p.text(title, 500, 500);
-      p.loop();
-      if (p.mouseX > p.width / 1.1 && p.mouseY > p.height / 3 && p.mouseY < p.height) {
-        loadFbResults();
-        tintOtherImg()
-        p.noLoop();
-      }
+    function overImage() {
+      let overMickey = p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3;
+      let overMark = p.mouseX > p.width / 1.1 && p.mouseY > p.height / 3 && p.mouseY < p.height;
 
+      if (overMickey) {
+        emailFlag = true;
+        loadEmailResults();
+      }
+      if (overMark) {
+        facebookFlag = true;
+        loadFbResults();
+
+        setTimeout(loadEmailResults, 2000);
+      }
     }
 
     // Functions
     // --------------------------------------------------
     function loadFbResults() {
-      title = "The most shared articles on Facebook are"
-      x = 0;
-      y = p.windowWidth / 2;
-      fetch(mostFacebooked)
-      .then(response => response.json())
-      .then(gotData)
-       .catch(err => console.log('error communicating with api'))
+      facebookRes.x = 0;
+      facebookRes.y = p.windowWidth / 2;
+      fetch(facebookRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error communicating with api'));
+      p.noLoop();
     }
     function loadEmailResults() {
-      x = p.windowHeight / 5;
-      y = p.windowWidth / 8;
-      title = "error communicating with api";
-
-      fetch(mostEmailed)
-      .then(response => response.json())
-      .then(gotData)
-       .catch(err => console.log('error'))
-
+      emailRes.x = p.windowHeight / 5;
+      emailRes.y = p.windowWidth / 8;
+      fetch(emailRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error'));
+      p.noLoop();
     }
+
+    function gotData(data) {
+      // retrieving data from the NYTIMES API from both most emailed + most shared on fb
+      if(facebookFlag){
+        facebookRes.results = data.results;
+      }
+      if(emailFlag){
+        emailRes.results = data.results;
+
+      }
+      getHeadlines();
+      printQueue();
+      // printFbQueue();
+      getKeywords();
+    }
+
     function getHeadlines() {
-      //adding the headlines to the end of the queue [] from the NYTIMES api
-      for (let i = 0; i < 10; i++) {
-        queue[i] = results[i].title;
+      if (facebookFlag) {
+        for (let i = 0; i < 10; i++) {
+          facebookRes.queue[i] = facebookRes.results[i].title;
+        }
+      } if(emailFlag) {
+        for (let i = 0; i < 10; i++) {
+          emailRes.queue[i] = emailRes.results[i].title;
       }
     }
-
+  }
     function printQueue() {
       p.fill(255);
       p.textSize(30);
       p.textSize(14);
 
       if (i < 10) {
-
-        x = x + 20;
+        if (emailFlag) {
+          emailRes.x = emailRes.x + 20;
+        }
+        if (facebookFlag) {
+          facebookRes.x = facebookRes.x + 20;
+        }
         if (i % 2 === 0 || i === 0) {
-          s = 0;
           p.fill(245, 100, 104);
         } else {
           p.fill(255);
         }
-        line = p.text((i + 1) + ". " + queue[i], y, x);
+        if(emailFlag){
+        line = p.text((i + 1) + ". \t" + emailRes.queue[i], emailRes.y, emailRes.x);
+        facebookFlag = true;
+      } if(facebookFlag){
+        line = p.text((i + 1) + ". \t" + facebookRes.queue[i], facebookRes.y, facebookRes.x);
+      }
         ++i;
       }
-      let interval = setTimeout(printQueue, 200);
+
+      let interval = setTimeout(printQueue, 100);
+
     }
 
     function getKeywords() {
@@ -127,7 +173,6 @@ class Sketch extends React.Component {
           }
         }
       }
-      console.log(keywords)
     }
     function tintOtherImg() {
       p.tint(0, 0, 0, 180);

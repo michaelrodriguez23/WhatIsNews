@@ -5,7 +5,7 @@ const NewsTicker = () => {
   return (
     <Wrapper>
     <BreakingBox>
-    <BigHeader className="heading">Requiem 4 The Web</BigHeader>
+    <BigHeader className="heading">Jan.4.21</BigHeader>
       </BreakingBox>
     <NewsBox>
   <News className="textUpdate">
