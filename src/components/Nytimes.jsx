@@ -47,6 +47,7 @@ class Sketch extends React.Component {
       title: "The most shared articles on Facebook are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?" + apiKey,
       img: "mark.png",
+      tinted: false,
       results: [],
       queue: []
     };
@@ -57,6 +58,7 @@ class Sketch extends React.Component {
       title: "The most emailed articles are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?" + apiKey,
       img: "mickey.png",
+      tinted: false,
       results: [],
       queue: []
     };
@@ -68,13 +70,32 @@ class Sketch extends React.Component {
       // Preloading the section with question & buttons
       mickey = p.loadImage(emailRes.img);
       mark = p.loadImage(facebookRes.img);
+      fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
+      fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
     };
 
+    function emailJSONtoData(data){
+        emailRes.results = data.results;
+    }
+    function fbJSONtoData(data){
+        facebookRes.results = data.results;
+    }
+
     p.draw = () => {
-      overImage();
-      p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
       p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
+      p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
+      overImage();
+      if(emailFlag){
+        setTimeout(loadOtherRes,5000)
+      }
+
+
+
     };
+    function loadOtherRes(){
+      loadFbResults();
+
+    }
 
     function overImage() {
       let overMickey = p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3;
@@ -83,12 +104,20 @@ class Sketch extends React.Component {
       if (overMickey) {
         emailFlag = true;
         loadEmailResults();
+
+        tintOtherImg();
+        p.redraw();
+        p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
+
+
       }
       if (overMark) {
         facebookFlag = true;
         loadFbResults();
+        tintOtherImg();
+          p.redraw();
+        p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
 
-        setTimeout(loadEmailResults, 2000);
       }
     }
 
@@ -97,28 +126,31 @@ class Sketch extends React.Component {
     function loadFbResults() {
       facebookRes.x = 0;
       facebookRes.y = p.windowWidth / 2;
-      fetch(facebookRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error communicating with api'));
+      getHeadlines();
+      printQueue();
+      // fetch(facebookRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error communicating with api'));
       p.noLoop();
     }
     function loadEmailResults() {
       emailRes.x = p.windowHeight / 5;
       emailRes.y = p.windowWidth / 8;
-      fetch(emailRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error'));
+      // fetch(emailRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error'));
+      getHeadlines();
+      printQueue();
       p.noLoop();
     }
 
     function gotData(data) {
       // retrieving data from the NYTIMES API from both most emailed + most shared on fb
-      if(facebookFlag){
+      if (facebookFlag) {
         facebookRes.results = data.results;
       }
-      if(emailFlag){
+      if (emailFlag) {
         emailRes.results = data.results;
 
       }
       getHeadlines();
       printQueue();
-      // printFbQueue();
       getKeywords();
     }
 
@@ -127,12 +159,13 @@ class Sketch extends React.Component {
         for (let i = 0; i < 10; i++) {
           facebookRes.queue[i] = facebookRes.results[i].title;
         }
-      } if(emailFlag) {
+      }
+      if (emailFlag) {
         for (let i = 0; i < 10; i++) {
           emailRes.queue[i] = emailRes.results[i].title;
+        }
       }
     }
-  }
     function printQueue() {
       p.fill(255);
       p.textSize(30);
@@ -150,12 +183,13 @@ class Sketch extends React.Component {
         } else {
           p.fill(255);
         }
-        if(emailFlag){
-        line = p.text((i + 1) + ". \t" + emailRes.queue[i], emailRes.y, emailRes.x);
-        facebookFlag = true;
-      } if(facebookFlag){
-        line = p.text((i + 1) + ". \t" + facebookRes.queue[i], facebookRes.y, facebookRes.x);
-      }
+        if (emailFlag) {
+          line = p.text((i + 1) + ". \t" + emailRes.queue[i], emailRes.y, emailRes.x);
+          facebookFlag = true;
+        }
+        if (facebookFlag) {
+          line = p.text((i + 1) + ". \t" + facebookRes.queue[i], facebookRes.y, facebookRes.x);
+        }
         ++i;
       }
 
