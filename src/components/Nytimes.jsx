@@ -11,12 +11,12 @@ class Sketch extends React.Component {
     let keywords = [];
     let apiKey = "api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU";
     let i = 0;
+    let k = 0;
     let y;
     let s;
     let emailButton
     let title = "New York Times Transmission of Articles";
     let headline = p.createElement("p", "");
-
     let strings;
     let lead;
     let results,
@@ -42,8 +42,8 @@ class Sketch extends React.Component {
     };
 
     let facebookRes = {
-      x: 1,
-      y,
+      x: p.windowWidth / 2,
+      y: p.windowHeight / 10,
       title: "The most shared articles on Facebook are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?" + apiKey,
       img: "mark.png",
@@ -53,8 +53,10 @@ class Sketch extends React.Component {
     };
 
     let emailRes = {
-      x: 1,
-      y,
+      // emailRes.x = p.windowHeight / 5;
+      // emailRes.y = p.windowWidth / 8;
+      x: p.windowWidth / 7,
+      y: p.windowHeight / 10,
       title: "The most emailed articles are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?" + apiKey,
       img: "mickey.png",
@@ -72,31 +74,25 @@ class Sketch extends React.Component {
       mark = p.loadImage(facebookRes.img);
       fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
       fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
-    };
 
-    function emailJSONtoData(data){
-        emailRes.results = data.results;
-    }
-    function fbJSONtoData(data){
-        facebookRes.results = data.results;
-    }
+    };
 
     p.draw = () => {
       p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
       p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
       overImage();
-      if(emailFlag){
-        setTimeout(loadOtherRes,5000)
-      }
-
-
 
     };
-    function loadOtherRes(){
-      loadFbResults();
-
+  /* Functions
+     --------------------------------------------------
+     */
+    function emailJSONtoData(data) {
+      emailRes.results = data.results;
+      getKeywords();
     }
-
+    function fbJSONtoData(data) {
+      facebookRes.results = data.results;
+    }
     function overImage() {
       let overMickey = p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3;
       let overMark = p.mouseX > p.width / 1.1 && p.mouseY > p.height / 3 && p.mouseY < p.height;
@@ -104,37 +100,31 @@ class Sketch extends React.Component {
       if (overMickey) {
         emailFlag = true;
         loadEmailResults();
-
         tintOtherImg();
         p.redraw();
-        p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
+        setTimeout(printAQueue,3000);
 
+        p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
 
       }
       if (overMark) {
         facebookFlag = true;
         loadFbResults();
         tintOtherImg();
-          p.redraw();
+        p.redraw();
+          setTimeout(printAQueue,3000);
         p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
 
       }
     }
 
-    // Functions
-    // --------------------------------------------------
+
     function loadFbResults() {
-      facebookRes.x = 0;
-      facebookRes.y = p.windowWidth / 2;
       getHeadlines();
       printQueue();
-      // fetch(facebookRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error communicating with api'));
       p.noLoop();
     }
     function loadEmailResults() {
-      emailRes.x = p.windowHeight / 5;
-      emailRes.y = p.windowWidth / 8;
-      // fetch(emailRes.apiUrl).then(response => response.json()).then(gotData).catch(err => console.log('error'));
       getHeadlines();
       printQueue();
       p.noLoop();
@@ -151,32 +141,30 @@ class Sketch extends React.Component {
       }
       getHeadlines();
       printQueue();
-      getKeywords();
+
+
     }
 
     function getHeadlines() {
-      if (facebookFlag) {
-        for (let i = 0; i < 10; i++) {
-          facebookRes.queue[i] = facebookRes.results[i].title;
-        }
-      }
-      if (emailFlag) {
-        for (let i = 0; i < 10; i++) {
-          emailRes.queue[i] = emailRes.results[i].title;
-        }
+
+      for (let i = 0; i < 10; i++) {
+        emailRes.queue[i] = emailRes.results[i].title;
+        facebookRes.queue[i] = facebookRes.results[i].title;
+
       }
     }
     function printQueue() {
       p.fill(255);
       p.textSize(30);
-      p.textSize(14);
+      p.textSize(15);
 
       if (i < 10) {
         if (emailFlag) {
-          emailRes.x = emailRes.x + 20;
+          emailRes.y = emailRes.y + 25;
+
         }
         if (facebookFlag) {
-          facebookRes.x = facebookRes.x + 20;
+            facebookRes.y = facebookRes.y + 25;
         }
         if (i % 2 === 0 || i === 0) {
           p.fill(245, 100, 104);
@@ -184,26 +172,63 @@ class Sketch extends React.Component {
           p.fill(255);
         }
         if (emailFlag) {
-          line = p.text((i + 1) + ". \t" + emailRes.queue[i], emailRes.y, emailRes.x);
-          facebookFlag = true;
+          line = p.text((i + 1) + ". " + emailRes.queue[i], emailRes.x, emailRes.y);
+
+
         }
         if (facebookFlag) {
-          line = p.text((i + 1) + ". \t" + facebookRes.queue[i], facebookRes.y, facebookRes.x);
+          console.log(facebookRes.x)
+          p.text((i + 1) + ". " + facebookRes.queue[i], facebookRes.x, facebookRes.y);
+
         }
         ++i;
       }
 
       let interval = setTimeout(printQueue, 100);
-
     }
+    function printAQueue() {
+      p.fill(255);
+      p.textSize(30);
+      p.textSize(15);
+
+      if (k < 10) {
+
+          facebookRes.y = facebookRes.y + 25;
+          emailRes.y = emailRes.y + 25;
+
+        if (k % 2 === 0 || k === 0) {
+          p.fill(245, 100, 104);
+        } else {
+          p.fill(255);
+        }
+        if(emailFlag){
+          p.text((k + 1) + ". " + facebookRes.queue[k], facebookRes.x, facebookRes.y);
+          p.redraw();
+          p.noTint();
+          p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
+        }
+        if(facebookFlag){
+      line =  p.text((k + 1) + ". " + emailRes.queue[k], emailRes.x, emailRes.y);
+      p.redraw();
+      p.noTint();
+      p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
+        }
+++k;
+      }
+
+
+
+      let intervalA = setTimeout(printAQueue, 100);
+    }
+
 
     function getKeywords() {
       // Iterating through each article, and inside the nested array.
-      for (let i = 0; i < results.length / 2; i++) {
-        strings = results[i].des_facet;
-        for (let j = 0; j < results.length / 2; j++) {
-          if (results[i].des_facet[j]) {
-            keywords.push(results[i].des_facet[j]);
+      for (let i = 0; i < emailRes.results.length; i++) {
+        strings = emailRes.results[i].des_facet;
+        for (let j = 0; j < emailRes.results.length; j++) {
+          if (emailRes.results[i].des_facet[j]) {
+            keywords.push(emailRes.results[i].des_facet[j]);
           }
         }
       }
