@@ -10,16 +10,16 @@ import Parallax from 'react-rellax'
 class App extends Component {
 
   render() {
-    return (<div className="App-header">
+    return (
+      <div className="App-header">
       <Parallax speed={4}>
         <NewsTicker/>
       </Parallax>
       <Header/>
       <Parallax speed={6}>
-          <Nytimes />
+        <Nytimes/>
         <SubCaption/>
       </Parallax>
-
       <SectionA/>
     </div>);
   }

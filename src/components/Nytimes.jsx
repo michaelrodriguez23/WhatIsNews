@@ -1,17 +1,28 @@
-import React from "react";
+import React, {Component} from "react";
 import p5 from "p5";
 
 class Sketch extends React.Component {
+  state = {
+    count: '0'
+  }
   constructor(props) {
-    super(props);
+    super(props); // THIS CALLS THE BASE CLASS CONSTRUCTOR
+    this.state = {
+      message: 'Welcome',
+      ingredients : []
+    }
     this.myRef = React.createRef();
+
   }
   Sketch = (p) => {
     let queue = [];
     let keywords = [];
     let apiKey = "api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU";
+    let myFont;
     let i = 0;
     let k = 0;
+      let q =0;
+    let r = p.random(0,20);
     let y;
     let s;
     let emailButton
@@ -64,9 +75,20 @@ class Sketch extends React.Component {
       results: [],
       queue: []
     };
+    let ingredient = {
+    x: '',
+    y: '',
+    text : ''
+  };
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight / 1.65);
+      p.createCanvas(p.windowWidth, p.windowHeight / 1.2 );
+      p.fill(255)
+      p.textSize(60)
+      p.text("<-- EMAILS", emailRes.x + 90, emailRes.y - 30)
+      p.text(" FACEBOOK --> ", facebookRes.x + 200, emailRes.y + 400)
+
+
     };
     p.preload = () => {
       // Preloading the section with question & buttons
@@ -74,6 +96,8 @@ class Sketch extends React.Component {
       mark = p.loadImage(facebookRes.img);
       fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
       fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
+      myFont = p.loadFont('Member.otf')
+
 
     };
 
@@ -81,11 +105,27 @@ class Sketch extends React.Component {
       p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
       p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
       overImage();
+      this.setState({ingredients: keywords})
+
 
     };
-  /* Functions
+    /* Functions
      --------------------------------------------------
      */
+    function ingredientAnimation(){
+    p.textFont(myFont)
+    p.textSize(p.width/70);
+    p.fill(255);
+    p.textStyle(p.BOLD);
+
+    if(q<20){
+          console.log(q)
+    // p.text( keywords[l],p.width/4,500+ r );
+    // r = r + 50;
+    q++
+  }
+
+    }
     function emailJSONtoData(data) {
       emailRes.results = data.results;
       getKeywords();
@@ -94,6 +134,7 @@ class Sketch extends React.Component {
       facebookRes.results = data.results;
     }
     function overImage() {
+      p.textFont();
       let overMickey = p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3;
       let overMark = p.mouseX > p.width / 1.1 && p.mouseY > p.height / 3 && p.mouseY < p.height;
 
@@ -102,7 +143,7 @@ class Sketch extends React.Component {
         loadEmailResults();
         tintOtherImg();
         p.redraw();
-        setTimeout(printAQueue,3000);
+        setTimeout(printAQueue, 2500);
 
         p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
 
@@ -112,21 +153,23 @@ class Sketch extends React.Component {
         loadFbResults();
         tintOtherImg();
         p.redraw();
-          setTimeout(printAQueue,3000);
+        setTimeout(printAQueue, 2500);
         p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
 
       }
     }
 
-
     function loadFbResults() {
+
       getHeadlines();
       printQueue();
+      setTimeout(ingredientAnimation,2000)
       p.noLoop();
     }
     function loadEmailResults() {
       getHeadlines();
       printQueue();
+      setTimeout(ingredientAnimation,2000)
       p.noLoop();
     }
 
@@ -137,11 +180,9 @@ class Sketch extends React.Component {
       }
       if (emailFlag) {
         emailRes.results = data.results;
-
       }
       getHeadlines();
       printQueue();
-
 
     }
 
@@ -157,27 +198,27 @@ class Sketch extends React.Component {
       p.fill(255);
       p.textSize(30);
       p.textSize(15);
-
       if (i < 10) {
         if (emailFlag) {
+
           emailRes.y = emailRes.y + 25;
 
         }
         if (facebookFlag) {
-            facebookRes.y = facebookRes.y + 25;
+          facebookRes.y = facebookRes.y + 25;
         }
         if (i % 2 === 0 || i === 0) {
           p.fill(245, 100, 104);
         } else {
           p.fill(255);
+
         }
         if (emailFlag) {
           line = p.text((i + 1) + ". " + emailRes.queue[i], emailRes.x, emailRes.y);
 
-
         }
         if (facebookFlag) {
-          console.log(facebookRes.x)
+
           p.text((i + 1) + ". " + facebookRes.queue[i], facebookRes.x, facebookRes.y);
 
         }
@@ -193,34 +234,31 @@ class Sketch extends React.Component {
 
       if (k < 10) {
 
-          facebookRes.y = facebookRes.y + 25;
-          emailRes.y = emailRes.y + 25;
+        facebookRes.y = facebookRes.y + 25;
+        emailRes.y = emailRes.y + 25;
 
         if (k % 2 === 0 || k === 0) {
           p.fill(245, 100, 104);
         } else {
           p.fill(255);
         }
-        if(emailFlag){
+        if (emailFlag) {
           p.text((k + 1) + ". " + facebookRes.queue[k], facebookRes.x, facebookRes.y);
           p.redraw();
           p.noTint();
           p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
         }
-        if(facebookFlag){
-      line =  p.text((k + 1) + ". " + emailRes.queue[k], emailRes.x, emailRes.y);
-      p.redraw();
-      p.noTint();
-      p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
+        if (facebookFlag) {
+          line = p.text((k + 1) + ". " + emailRes.queue[k], emailRes.x, emailRes.y);
+          p.redraw();
+          p.noTint();
+          p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
         }
-++k;
+        ++k;
       }
-
-
 
       let intervalA = setTimeout(printAQueue, 100);
     }
-
 
     function getKeywords() {
       // Iterating through each article, and inside the nested array.
@@ -245,9 +283,25 @@ class Sketch extends React.Component {
   render() {
     return (<div ref={this.myRef}>
       <h1 className="App-title">{this.props.title}</h1>
+      <h1>{this.formatCount()}</h1>
+
       <div>{JSON.stringify(this.props.myObj)}</div>
+
     </div>);
   }
+  formatCount() {
+    const {count} = this.state;
+    return count == 0
+      ? 'Zero'
+      : count;
+  }
 }
+
+// <ul>
+//
+//          {this.state.ingredients.map(
+//            (value ,index) => <li> { '# '}{ value }</li>)}
+//          </ul>
+
 
 export default Sketch;

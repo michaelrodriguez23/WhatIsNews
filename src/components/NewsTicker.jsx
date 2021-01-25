@@ -1,11 +1,15 @@
 import React from 'react'
+import {useState} from 'react';
 import Styled from 'styled-components';
 import '../index.css';
+
+
 const NewsTicker = () => {
+  const now = new Date();
   return (
     <Wrapper>
     <BreakingBox>
-    <BigHeader className="heading">Jan.4.21</BigHeader>
+    <BigHeader className="heading"></BigHeader>
       </BreakingBox>
     <NewsBox>
   <News className="textUpdate">
