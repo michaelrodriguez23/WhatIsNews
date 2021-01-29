@@ -9,7 +9,7 @@ class Sketch extends React.Component {
     super(props); // THIS CALLS THE BASE CLASS CONSTRUCTOR
     this.state = {
       message: 'Welcome',
-      ingredients : []
+      ingredients: []
     }
     this.myRef = React.createRef();
 
@@ -21,10 +21,14 @@ class Sketch extends React.Component {
     let myFont;
     let i = 0;
     let k = 0;
-      let q =0;
-    let r = p.random(0,20);
+    let q = 0;
+    // let r = p.random(0, 20);
+    let r = 0;
+    let t = 0;
     let y;
     let s;
+    let bottomBuffer;
+    let topBuffer;
     let emailButton
     let title = "New York Times Transmission of Articles";
     let headline = p.createElement("p", "");
@@ -64,8 +68,6 @@ class Sketch extends React.Component {
     };
 
     let emailRes = {
-      // emailRes.x = p.windowHeight / 5;
-      // emailRes.y = p.windowWidth / 8;
       x: p.windowWidth / 7,
       y: p.windowHeight / 10,
       title: "The most emailed articles are",
@@ -76,18 +78,19 @@ class Sketch extends React.Component {
       queue: []
     };
     let ingredient = {
-    x: '',
-    y: '',
-    text : ''
-  };
+      x: '',
+      y: '',
+      text: ''
+    };
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight / 1.2 );
+      p.createCanvas(p.windowWidth, p.windowHeight);
+       bottomBuffer = p.createGraphics(p.windowWidth, 400);
+       topBuffer = p.createGraphics(p.windowWidth,p.windowHeight/4)
       p.fill(255)
       p.textSize(60)
       p.text("<-- EMAILS", emailRes.x + 90, emailRes.y - 30)
       p.text(" FACEBOOK --> ", facebookRes.x + 200, emailRes.y + 400)
-
 
     };
     p.preload = () => {
@@ -96,34 +99,41 @@ class Sketch extends React.Component {
       mark = p.loadImage(facebookRes.img);
       fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
       fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
-      myFont = p.loadFont('Member.otf')
-
-
+      myFont = p.loadFont('Chomsky.otf')
     };
 
     p.draw = () => {
       p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
       p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
+      drawBottomBuffer();
+      p.image(bottomBuffer, 400, 4000);
       overImage();
-      this.setState({ingredients: keywords})
 
+      // this.setState({ingredients: keywords})
 
     };
     /* Functions
      --------------------------------------------------
      */
-    function ingredientAnimation(){
-    p.textFont(myFont)
-    p.textSize(p.width/70);
-    p.fill(255);
-    p.textStyle(p.BOLD);
+     function drawBottomBuffer() {
+    bottomBuffer.background(0);
+      bottomBuffer.fill(39,24,79);
+    bottomBuffer.textSize(bottomBuffer.width/25);
+    bottomBuffer.textFont(myFont)
+    if (q < 100) {
+      q++
 
-    if(q<20){
-          console.log(q)
-    // p.text( keywords[l],p.width/4,500+ r );
-    // r = r + 50;
-    q++
-  }
+    bottomBuffer.text(keywords[89],bottomBuffer.width/25, bottomBuffer.height/1.4);
+}
+
+}
+    function ingredientAnimation() {
+        p.image(bottomBuffer,400,400)
+      bottomBuffer.textFont(myFont)
+      p.textSize(p.width / 15);
+
+
+
 
     }
     function emailJSONtoData(data) {
@@ -160,17 +170,15 @@ class Sketch extends React.Component {
     }
 
     function loadFbResults() {
-
       getHeadlines();
       printQueue();
-      setTimeout(ingredientAnimation,2000)
       p.noLoop();
     }
     function loadEmailResults() {
       getHeadlines();
       printQueue();
-      setTimeout(ingredientAnimation,2000)
       p.noLoop();
+
     }
 
     function gotData(data) {
@@ -255,6 +263,8 @@ class Sketch extends React.Component {
           p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
         }
         ++k;
+      } else {
+        setTimeout(ingredientAnimation(),5000)
       }
 
       let intervalA = setTimeout(printAQueue, 100);
@@ -278,6 +288,7 @@ class Sketch extends React.Component {
   };
   componentDidMount() {
     this.myP5 = new p5(this.Sketch, this.myRef.current);
+
   }
 
   render() {
@@ -302,6 +313,5 @@ class Sketch extends React.Component {
 //          {this.state.ingredients.map(
 //            (value ,index) => <li> { '# '}{ value }</li>)}
 //          </ul>
-
 
 export default Sketch;
