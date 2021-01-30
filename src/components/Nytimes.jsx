@@ -84,7 +84,7 @@ class Sketch extends React.Component {
     };
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight);
+      p.createCanvas(p.windowWidth, p.windowHeight/1.7);
        bottomBuffer = p.createGraphics(p.windowWidth, 400);
        topBuffer = p.createGraphics(p.windowWidth,p.windowHeight/4)
       p.fill(255)

@@ -6,9 +6,14 @@ import '../index.css';
 
 const NewsTicker = () => {
   const now = new Date();
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+  const date = `${monthNames[now.getMonth()+1]}.${now.getDate()}.${now.getFullYear()}`;
   return (
     <Wrapper>
     <BreakingBox>
+      {date}
     <BigHeader className="heading"></BigHeader>
       </BreakingBox>
     <NewsBox>
@@ -19,6 +24,7 @@ const NewsTicker = () => {
 
   )
 }
+
 const Wrapper = Styled.div`
 background-color: black;
 display:flex;
@@ -36,7 +42,7 @@ border-radius:100px;
 position: relative;
 justify-content: center;
 box-shadow: 2px 5px 20px #27184f;
-
+font-family:serif;
 align-items: center;
 border-right: 30px solid #f56468;
 border-left: 30px solid #f56468;
