@@ -26,6 +26,7 @@ class Sketch extends React.Component {
     let r = 0;
     let t = 0;
     let y;
+    let button;
     let s;
     let bottomBuffer;
     let topBuffer;
@@ -100,13 +101,15 @@ class Sketch extends React.Component {
       mark = p.loadImage(facebookRes.img);
       fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
       fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
-      myFont = p.loadFont('Chomsky.otf')
+      myFont = p.loadFont('Chomsky.otf');
+
     };
 
     p.draw = () => {
       p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
       p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
       // p.image(bottomBuffer, 400, 400);
+      ingredientAnimation();
       overImage();
 
       // this.setState({ingredients: keywords})
@@ -115,22 +118,28 @@ class Sketch extends React.Component {
     /* Functions
      --------------------------------------------------
      */
+
      function drawBottomBuffer() {
     bottomBuffer.background(0);
       bottomBuffer.fill(255);
     bottomBuffer.textSize(bottomBuffer.width/20);
+    button = p.createButton('Keywords');
+   button.mousePressed(()=> q++);
+   //  button.style()
+
 
     bottomBuffer.textFont(myFont)
 
     if (q < 90) {
     bottomBuffer.background(0);
     bottomBuffer.text(keywords[q],bottomBuffer.width/20,bottomBuffer.height/2);
+    button.position(50,p.height/1.01)
 
-    if(p.mouseIsPressed){
-      console.log(q);
-    q++;
-
-  }
+  //   if(p.mouseIsPressed){
+  //     console.log(q);
+  //   q++;
+  //
+  // }
 
 
 } else{
@@ -143,7 +152,7 @@ class Sketch extends React.Component {
   drawBottomBuffer();
 
         p.image(bottomBuffer,0,p.height/1.2)
-        p.text('Click to see the keywords used in the times',bottomBuffer.width/18,p.height/1+(20))
+        // p.text('Click to see the keywords used in the times',bottomBuffer.width/18,p.height/1)
       bottomBuffer.textFont(myFont)
 
 
@@ -280,7 +289,7 @@ class Sketch extends React.Component {
         }
         ++k;
       } else {
-        setTimeout(ingredientAnimation(),5000)
+        // setTimeout(ingredientAnimation(),5000)
       }
 
       let intervalA = setTimeout(printAQueue, 100);
