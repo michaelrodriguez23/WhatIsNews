@@ -84,9 +84,10 @@ class Sketch extends React.Component {
     };
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight/1.7);
-       bottomBuffer = p.createGraphics(p.windowWidth, 400);
-       topBuffer = p.createGraphics(p.windowWidth,p.windowHeight/4)
+      p.createCanvas(p.windowWidth, p.windowHeight/1.6);
+       bottomBuffer = p.createGraphics(p.windowWidth/2, p.windowHeight/6);
+       topBuffer = p.createGraphics(p.windowWidth/5,p.windowHeight/4);
+         bottomBuffer.frameRate(2);
       p.fill(255)
       p.textSize(60)
       p.text("<-- EMAILS", emailRes.x + 90, emailRes.y - 30)
@@ -105,8 +106,7 @@ class Sketch extends React.Component {
     p.draw = () => {
       p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
       p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
-      drawBottomBuffer();
-      p.image(bottomBuffer, 400, 4000);
+      // p.image(bottomBuffer, 400, 400);
       overImage();
 
       // this.setState({ingredients: keywords})
@@ -117,20 +117,35 @@ class Sketch extends React.Component {
      */
      function drawBottomBuffer() {
     bottomBuffer.background(0);
-      bottomBuffer.fill(39,24,79);
-    bottomBuffer.textSize(bottomBuffer.width/25);
-    bottomBuffer.textFont(myFont)
-    if (q < 100) {
-      q++
+      bottomBuffer.fill(255);
+    bottomBuffer.textSize(bottomBuffer.width/20);
 
-    bottomBuffer.text(keywords[89],bottomBuffer.width/25, bottomBuffer.height/1.4);
+    bottomBuffer.textFont(myFont)
+
+    if (q < 90) {
+    bottomBuffer.background(0);
+    bottomBuffer.text(keywords[q],bottomBuffer.width/20,bottomBuffer.height/2);
+
+    if(p.mouseIsPressed){
+      console.log(q);
+    q++;
+
+  }
+
+
+} else{
+  q=1;
 }
 
 }
     function ingredientAnimation() {
-        p.image(bottomBuffer,400,400)
+      //location of buffer
+  drawBottomBuffer();
+
+        p.image(bottomBuffer,0,p.height/1.2)
+        p.text('Click to see the keywords used in the times',bottomBuffer.width/18,p.height/1+(20))
       bottomBuffer.textFont(myFont)
-      p.textSize(p.width / 15);
+
 
 
 
@@ -234,6 +249,7 @@ class Sketch extends React.Component {
       }
 
       let interval = setTimeout(printQueue, 100);
+
     }
     function printAQueue() {
       p.fill(255);
@@ -268,6 +284,8 @@ class Sketch extends React.Component {
       }
 
       let intervalA = setTimeout(printAQueue, 100);
+
+
     }
 
     function getKeywords() {

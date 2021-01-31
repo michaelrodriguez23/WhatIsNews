@@ -13,7 +13,9 @@ const NewsTicker = () => {
   return (
     <Wrapper>
     <BreakingBox>
-      {date}
+      <DateT>
+        {date}
+      </DateT>
     <BigHeader className="heading"></BigHeader>
       </BreakingBox>
     <NewsBox>
@@ -24,6 +26,12 @@ const NewsTicker = () => {
 
   )
 }
+const DateT = Styled.p`
+  text-align: center;
+  font-size: 1em;
+  font-family: 'Roboto Mono', monospace;
+  color: #f56468`;
+
 
 const Wrapper = Styled.div`
 background-color: black;
@@ -43,7 +51,6 @@ position: relative;
 justify-content: center;
 box-shadow: 2px 5px 20px #27184f;
 font-family:serif;
-align-items: center;
 border-right: 30px solid #f56468;
 border-left: 30px solid #f56468;
 margin-top:.5%;
@@ -61,9 +68,8 @@ const BigHeader = Styled.h1`
 font-size:1.8vw;
 color:#f56468;
 text-align: center;
-text-decoration-line:  ;
- text-decoration-style: ;
-    font-family: 'Roboto Mono', monospace;`;
+
+font-family: 'Roboto Mono', monospace;`;
 
 const News = Styled.p`
 font-size: 1.5vw;
