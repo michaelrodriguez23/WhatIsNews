@@ -1,10 +1,20 @@
 <h1> Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. </h1>
+<h3> Using the NYTIMES API </h3>
 <H4>Currently Supporting</h4>
 <ul>
     <li>Facebook</li>
     <li>Email</li>
     </ul>
     
+<h1> GOALS </H1>
+Build a single page application (SPA) using the React and p5js libraries. Try to combine the React declarative programming approach and imperative one for direct DOM manipulation. Avoid any collisions, performance issues, and memory leaks. Use the best of the both approaches.
+
+    Multiple p5 sketches on a same screen;
+    Mount sketches in different points of the DOM tree;
+    Bidirectional communication between the main React app and sketches;
+    Using the latest React features.
+
+
 
 This project demonstrates how to combine React (including the latest features such as hooks and context) and p5.js:
 
@@ -15,6 +25,8 @@ This project demonstrates how to combine React (including the latest features su
     Bidirectional communication between the main React app and sketches;
     Using the latest React features:
     Styled-Components
+    
+ The idea is that the p5.js sketch is wrapped in a React component. The data that comes into the sketch is passed on to this component as props. Callbacks are used to return information back from the sketch to the application.
 
 In the project directory, you can run:
 
