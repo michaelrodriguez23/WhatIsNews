@@ -82,7 +82,7 @@ class Sketch extends React.Component {
     };
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight / 1.7);
+      p.createCanvas(p.windowWidth, p.windowHeight / 1.9);
       p.fill(255)
       p.textSize(60)
       p.text("<-- EMAILS", emailRes.leadX, emailRes.LeadY);
