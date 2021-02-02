@@ -1,4 +1,4 @@
-Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. 
+<h1> Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. <h1>
 
 This project demonstrates how to combine React (including the latest features such as hooks and context) and p5.js:
 
