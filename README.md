@@ -1,4 +1,4 @@
-[![News shared Demo](nyt.gif)](https://www.youtube.com/watch?v=PqZC-vKCedg)
+[![News shared Demo](doc/nyt.gif)](https://www.youtube.com/watch?v=PqZC-vKCedg)
 <h1> Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. </h1>
 <h3>Data is extracted using The New York Times REST API </h3>
 <H4>Currently Supporting</h4>
