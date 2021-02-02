@@ -6,160 +6,127 @@ class Sketch extends React.Component {
     count: '0'
   }
   constructor(props) {
-    super(props); // THIS CALLS THE BASE CLASS CONSTRUCTOR
+    super(props); // this calls the base class constructor
+    this.myRef = React.createRef();
     this.state = {
       message: 'Welcome',
       ingredients: []
     }
-    this.myRef = React.createRef();
-
   }
   Sketch = (p) => {
+    // Global Variables //////////////////////////////////////////////////////////////////////
     let queue = [];
     let keywords = [];
-    let apiKey = "api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU";
+    let apiKey = "api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU"; // move .env once done
     let myFont;
+    let currHeadline;
     let i = 0;
     let k = 0;
     let q = 0;
-    // let r = p.random(0, 20);
-    let r = 0;
-    let t = 0;
-    let y;
-    let button;
-    let s;
+    let tintFlag = false;
     let bottomBuffer;
     let topBuffer;
-    let emailButton
-    let title = "New York Times Transmission of Articles";
-    let headline = p.createElement("p", "");
     let strings;
-    let lead;
     let results,
       line;
     let mark;
     let mickey;
-    let facebookFlag = false;
-    let emailFlag = false;
+    // Images ///////////////////////////////////////////////////////////////////////////
     let markImg = {
       img: mark,
-      x: p.windowWidth - 350,
+      x: p.windowWidth / 1.25,
       y: 150,
-      width: 400,
-      height: 400
+      width: p.windowWidth / 5,
+      height: p.windowWidth / 5
     };
-
     let mickeyImg = {
       img: mickey,
-      x: 50,
+      x: p.windowWidth / 30,
       y: 0,
-      width: 250,
-      height: 250
+      width: p.windowWidth / 8,
+      height: p.windowWidth / 8
     };
-
+    // API Results/////////////////////////////////////////////////////////////////////////////
     let facebookRes = {
       x: p.windowWidth / 2,
       y: p.windowHeight / 10,
+      leadX:p.windowWidth/2,
+      leadY:p.windowHeight,
       title: "The most shared articles on Facebook are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?" + apiKey,
       img: "mark.png",
       tinted: false,
       results: [],
+      flag: false,
       queue: []
     };
 
     let emailRes = {
       x: p.windowWidth / 7,
       y: p.windowHeight / 10,
+      leadX:p.windowWidth/2,
+      leadY:p.windowHeight/2,
       title: "The most emailed articles are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?" + apiKey,
       img: "mickey.png",
       tinted: false,
       results: [],
+      flag: false,
       queue: []
     };
-    let ingredient = {
+    //  Headline Object/////////////////////////////////////////////////////////////////////////////
+    let KeywordObj = {
       x: '',
       y: '',
       text: ''
     };
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight/1.6);
-       bottomBuffer = p.createGraphics(p.windowWidth/2, p.windowHeight/6);
-       topBuffer = p.createGraphics(p.windowWidth/5,p.windowHeight/4);
-         bottomBuffer.frameRate(2);
+      p.createCanvas(p.windowWidth, p.windowHeight / 1.7);
       p.fill(255)
       p.textSize(60)
-      p.text("<-- EMAILS", emailRes.x + 90, emailRes.y - 30)
-      p.text(" FACEBOOK --> ", facebookRes.x + 200, emailRes.y + 400)
-
+      p.text("<-- EMAILS", emailRes.leadX, emailRes.LeadY);
+      p.text(" FACEBOOK --> ", facebookRes.leadX, facebookRes.leadY)
+      bottomBuffer = p.createGraphics(p.windowWidth / 1.5, p.windowHeight / 10); //size
+      // topBuffer = p.createGraphics(p.windowWidth / 5, p.windowHeight / 4);
     };
     p.preload = () => {
       // Preloading the section with question & buttons
       mickey = p.loadImage(emailRes.img);
       mark = p.loadImage(facebookRes.img);
+      myFont = p.loadFont('Chomsky.otf');
+      // API CALLS -> Response -> JSON -> Success -> Extract Data  Fail -> Console.log Err
       fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
       fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
-      myFont = p.loadFont('Chomsky.otf');
-
     };
-
     p.draw = () => {
+        drawKeywords();
       p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
       p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
-      // p.image(bottomBuffer, 400, 400);
-      ingredientAnimation();
       overImage();
 
-      // this.setState({ingredients: keywords})
-
     };
-    /* Functions
-     --------------------------------------------------
-     */
+    // Functions /////////////////////////////////////////////////////////////////////////
 
-     function drawBottomBuffer() {
-    bottomBuffer.background(0);
+    function drawKeywords() {
+      const bb = p.image(bottomBuffer, p.width / 5, 0); // location of buffer
+      p.textSize(12)
+       // p.text('The Topics We Consume',p.width/2.3,10)
+      bottomBuffer.textFont(myFont);
+      bottomBuffer.background(0);
       bottomBuffer.fill(255);
-    bottomBuffer.textSize(bottomBuffer.width/20);
-    button = p.createButton('Keywords');
-   button.mousePressed(()=> q++);
-   //  button.style()
-
-
-    bottomBuffer.textFont(myFont)
-
-    if (q < 90) {
-    bottomBuffer.background(0);
-    bottomBuffer.text(keywords[q],bottomBuffer.width/20,bottomBuffer.height/2);
-    button.position(50,p.height/1.01)
-
-  //   if(p.mouseIsPressed){
-  //     console.log(q);
-  //   q++;
-  //
-  // }
-
-
-} else{
-  q=1;
-}
-
-}
-    function ingredientAnimation() {
-      //location of buffer
-  drawBottomBuffer();
-
-        p.image(bottomBuffer,0,p.height/1.2)
-        // p.text('Click to see the keywords used in the times',bottomBuffer.width/18,p.height/1)
+      bottomBuffer.textSize(bottomBuffer.width / 17);
       bottomBuffer.textFont(myFont)
-
-
-
-
-
+      if (q < 90) {
+        q=p.floor(p.mouseX/20);
+        bottomBuffer.background(0);
+        //location of buffer
+        currHeadline = bottomBuffer.text(keywords[q], bottomBuffer.width / 12, bottomBuffer.height / 1.5);
+      } else {
+        q = 1;
+      }
     }
+    // Converting JSON -> Pushing it to each array
     function emailJSONtoData(data) {
       emailRes.results = data.results;
       getKeywords();
@@ -167,28 +134,34 @@ class Sketch extends React.Component {
     function fbJSONtoData(data) {
       facebookRes.results = data.results;
     }
+
+    // If image is hovered over load the results, tint image, and remove keyword instance -> Then print the other results after 2.5 secs.
     function overImage() {
+
+
       p.textFont();
       let overMickey = p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3;
       let overMark = p.mouseX > p.width / 1.1 && p.mouseY > p.height / 3 && p.mouseY < p.height;
-
       if (overMickey) {
-        emailFlag = true;
+        emailRes.flag = true;
         loadEmailResults();
         tintOtherImg();
-        p.redraw();
+        p.removeElements();
+        // bb.hide();
         setTimeout(printAQueue, 2500);
-
+        p.removeElements();
         p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
+          p.noLoop();
 
       }
       if (overMark) {
-        facebookFlag = true;
+        facebookRes.flag = true;
         loadFbResults();
         tintOtherImg();
         p.redraw();
         setTimeout(printAQueue, 2500);
         p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
+          p.noLoop();
 
       }
     }
@@ -196,109 +169,98 @@ class Sketch extends React.Component {
     function loadFbResults() {
       getHeadlines();
       printQueue();
-      p.noLoop();
+      // p.noLoop();
     }
     function loadEmailResults() {
       getHeadlines();
       printQueue();
-      p.noLoop();
+      // p.noLoop();
 
     }
-
+    // Boolean logic to stream data results from the two api queries
     function gotData(data) {
-      // retrieving data from the NYTIMES API from both most emailed + most shared on fb
-      if (facebookFlag) {
+      if (facebookRes.flag) {
         facebookRes.results = data.results;
       }
-      if (emailFlag) {
+      if (emailRes.flag) {
         emailRes.results = data.results;
       }
       getHeadlines();
       printQueue();
-
     }
-
+    // Pushings results to its respectively array
     function getHeadlines() {
-
       for (let i = 0; i < 10; i++) {
         emailRes.queue[i] = emailRes.results[i].title;
         facebookRes.queue[i] = facebookRes.results[i].title;
-
       }
     }
+    // Printing Animation : Create Space Between Headlines, and style text if even/odd.
     function printQueue() {
       p.fill(255);
       p.textSize(30);
       p.textSize(15);
       if (i < 10) {
-        if (emailFlag) {
-
+        if (emailRes.flag) {
           emailRes.y = emailRes.y + 25;
-
         }
-        if (facebookFlag) {
+        if (facebookRes.flag) {
           facebookRes.y = facebookRes.y + 25;
         }
         if (i % 2 === 0 || i === 0) {
           p.fill(245, 100, 104);
         } else {
           p.fill(255);
-
         }
-        if (emailFlag) {
+        if (emailRes.flag) {
           line = p.text((i + 1) + ". " + emailRes.queue[i], emailRes.x, emailRes.y);
-
         }
-        if (facebookFlag) {
-
+        if (facebookRes.flag) {
           p.text((i + 1) + ". " + facebookRes.queue[i], facebookRes.x, facebookRes.y);
-
         }
         ++i;
       }
-
       let interval = setTimeout(printQueue, 100);
-
     }
+    // Printing Animation for the data that wasn't initially loaded. * * Refactor so its DRY?
     function printAQueue() {
+      p.loop();
       p.fill(255);
       p.textSize(30);
       p.textSize(15);
-
       if (k < 10) {
-
         facebookRes.y = facebookRes.y + 25;
         emailRes.y = emailRes.y + 25;
-
         if (k % 2 === 0 || k === 0) {
           p.fill(245, 100, 104);
         } else {
           p.fill(255);
         }
-        if (emailFlag) {
+        if (emailRes.flag) {
           p.text((k + 1) + ". " + facebookRes.queue[k], facebookRes.x, facebookRes.y);
           p.redraw();
           p.noTint();
           p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
         }
-        if (facebookFlag) {
+        if (facebookRes.flag) {
           line = p.text((k + 1) + ". " + emailRes.queue[k], emailRes.x, emailRes.y);
           p.redraw();
           p.noTint();
           p.image(mickey, mickeyImg.x, mickeyImg.y, mickeyImg.width, mickeyImg.height);
         }
         ++k;
-      } else {
-        // setTimeout(ingredientAnimation(),5000)
+        tintFlag = true;
       }
-
       let intervalA = setTimeout(printAQueue, 100);
-
-
     }
+    function tintOtherImg() {
+      if(!tintFlag){
+      p.tint(0, 0, 0, 180);
+    }
+  }
 
+    // Iterating through each article, and inside the nested array & pushing it into keywords arr
     function getKeywords() {
-      // Iterating through each article, and inside the nested array.
       for (let i = 0; i < emailRes.results.length; i++) {
         strings = emailRes.results[i].des_facet;
         for (let j = 0; j < emailRes.results.length; j++) {
@@ -308,21 +270,16 @@ class Sketch extends React.Component {
         }
       }
     }
-    function tintOtherImg() {
-      p.tint(0, 0, 0, 180);
-    }
-
   };
+  // Mounting p5 as an instance.
   componentDidMount() {
     this.myP5 = new p5(this.Sketch, this.myRef.current);
-
   }
 
   render() {
     return (<div ref={this.myRef}>
       <h1 className="App-title">{this.props.title}</h1>
       <h1>{this.formatCount()}</h1>
-
       <div>{JSON.stringify(this.props.myObj)}</div>
 
     </div>);
