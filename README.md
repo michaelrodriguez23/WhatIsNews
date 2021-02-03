@@ -1,7 +1,7 @@
 [![News shared Demo](docs/nyt.gif)](https://www.youtube.com/watch?v=PqZC-vKCedg)
 <h1> Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. </h1>
 <h2> Are we consuming 🗞️ or 🧻 ? <h2> 
-<H4>Currently Supporting</h4>
+<H4>Features currently built</h4>
 <ul>
     <li>Facebook</li>
     <li>Email</li>
