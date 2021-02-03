@@ -1,14 +1,16 @@
 [![News shared Demo](docs/nyt.gif)](https://www.youtube.com/watch?v=PqZC-vKCedg)
 <h1> Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. </h1>
-<h3>Data is extracted using The New York Times REST API </h3>
-<H4>Currently Supporting</h4>
+<h2> Are we consuming 🗞️ or 🧻 ? <h2> 
+<H4>Features currently built</h4>
 <ul>
     <li>Facebook</li>
     <li>Email</li>
     </ul>
+    <ul> 
     <h4> Working to add </h4> 
     <li> Twitter </li>
     <li> Reddit </li>
+    <li> Mobile Responsiveness <li>
       </ul>
     
 <h1> Goals </H1>
@@ -30,15 +32,3 @@ This project demonstrates how to combine React (including the latest features su
     Styled-Components
     
 The p5.js sketch is wrapped in a React component. The data that comes into the sketch is passed on to this component as props. Callbacks are used to return information back from the sketch to the application.
-
-In the project directory, you can run:
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
