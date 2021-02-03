@@ -1,7 +1,6 @@
 [![News shared Demo](docs/nyt.gif)](https://www.youtube.com/watch?v=PqZC-vKCedg)
-<h1 style="text-align: center; > Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. </h1>
-<h1 style="text-align: center;> Is it 🗞️ or 🧻 !!! <h1> 
-<h3>Data is extracted using The New York Times REST API </h3>
+<h1> Extracting the Most Shared Articles on different Social Platforms to see how they compare at face value. </h1>
+<h2> Is it 🗞️ or 🧻 !!! <h2> 
 <H4>Currently Supporting</h4>
 <ul>
     <li>Facebook</li>
