@@ -19,7 +19,7 @@ background-color: black;
 background-image: url(${fake});
 background-repeat: repeat;
 background-color:black;
-min-height: 300vh;
+min-height: 200vh;
 color:white;
 
 `
