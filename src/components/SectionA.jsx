@@ -1,14 +1,14 @@
 import React from 'react'
 import Styled from 'styled-components';
 import Parallax from 'react-rellax'
-
+import fake from '../fake.jpg'
 
 const SectionA = () => {
   return (
     <Wrapper>
 
-        <Parallax speed={2}>
-    <img src={process.env.PUBLIC_URL+'/mickey.jpg'} alt=""/>
+        <Parallax speed={-20}>
+
 </Parallax>
 
     </Wrapper>
@@ -16,11 +16,12 @@ const SectionA = () => {
 }
 const Wrapper = Styled.div`
 background-color: black;
-background-image: url('/fake.jpg');
+background-image: url(${fake});
 background-repeat: repeat;
 background-color:black;
-min-height: 500vh;
+min-height: 300vh;
 color:white;
+
 `
 
 
