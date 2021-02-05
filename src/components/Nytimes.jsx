@@ -17,7 +17,7 @@ class Sketch extends React.Component {
     // Global Variables //////////////////////////////////////////////////////////////////////
     let queue = [];
     let keywords = [];
-    let apiKey = process.env.API_KEY;
+    let apiKey = 'api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU';
     let myFont;
     let currHeadline;
     let i = 0;

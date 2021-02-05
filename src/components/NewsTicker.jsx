@@ -42,6 +42,11 @@ display:flex;
 font: inherit;
 `;
 const BreakingBox = Styled.div`
+@media screen and (max-width: 1200px) {
+
+    width:35vw;
+
+}
 background:black;
 flex-direction:row;
 height:10vh;
@@ -72,6 +77,11 @@ text-align: center;
 font-family: 'Roboto Mono', monospace;`;
 
 const News = Styled.p`
+@media screen and (max-width: 1200px) {
+
+font-size: 2vh;
+
+}
 font-size: 1.5vw;
 color:white;
 position:center;
