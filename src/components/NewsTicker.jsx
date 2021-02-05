@@ -20,7 +20,7 @@ const NewsTicker = () => {
       </BreakingBox>
     <NewsBox>
   <News className="textUpdate">
-  <marquee behavior="scroll" direction="left" scrollamount="10"> 👁👄👁 it is of little comfort to realize that the Internet is "a favor" - a favor that can be taken away at any moment. Moreover, the Internet is more disfunctional than available, be it because of the nation-wide firewall of China or the massive data surveillance in the USA where this "favor" comes with indecent strings attached. It's high time to leave the Internet people.  🚫🤦⛓️< /marquee></News>
+  <marquee behavior="scroll" direction="left" scrollamount="12">👁👄👁Below are the keywords used in the NYTIMES for every article shared. Deconstucting their metadata provides a context of seeing outside their wireframe, a clear intake of the topics of media we consume as news. 👁👄👁 it is of little comfort to realize that the Internet is "a favor" - a favor that can be taken away at any moment. 🚫🤦⛓️< /marquee></News>
     </NewsBox>
     </Wrapper>
 

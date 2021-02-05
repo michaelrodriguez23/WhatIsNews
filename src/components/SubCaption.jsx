@@ -7,8 +7,8 @@ class SubCaption extends Component {
     return (
     <Wrapper>
       <h1 className="caption">Circulation of News Can Vary Through The Web</h1>
-      <p>How does the top ten articles shared online </p>
-      <p>{`From "The New York Times" compare at face value`}</p>
+      <h3>How does the top ten articles shared online </h3>
+      <h4>{`From "The New York Times" compare at face value`}</h4>
       <p> When shared through facebook or through email</p>
     </Wrapper>
     );
