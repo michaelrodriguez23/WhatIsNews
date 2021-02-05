@@ -17,7 +17,7 @@ class Sketch extends React.Component {
     // Global Variables //////////////////////////////////////////////////////////////////////
     let queue = [];
     let keywords = [];
-    let apiKey = (process.env.API_KEY) // move .env once done
+    let apiKey = (process.env.API_KEY)
     let myFont;
     let currHeadline;
     let i = 0;
@@ -91,6 +91,7 @@ class Sketch extends React.Component {
       // topBuffer = p.createGraphics(p.windowWidth / 5, p.windowHeight / 4);
     };
     p.preload = () => {
+
       // Preloading the section with question & buttons
       mickey = p.loadImage(emailRes.img);
       mark = p.loadImage(facebookRes.img);
