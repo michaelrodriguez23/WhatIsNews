@@ -9,7 +9,7 @@ const NewsTicker = () => {
   const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
-  const date = `${monthNames[now.getMonth()+1]}.${now.getDate()}.${now.getFullYear()}`;
+  const date = `${monthNames[now.getMonth()]}.${now.getDate()}.${now.getFullYear()}`;
   return (
     <Wrapper>
     <BreakingBox>

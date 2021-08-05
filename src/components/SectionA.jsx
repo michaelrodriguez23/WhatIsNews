@@ -17,7 +17,8 @@ const SectionA = () => {
 const Wrapper = Styled.div`
 background-color: black;
 background-image: url(${fake});
-background-repeat: repeat;
+background-repeat:repeat-x;
+background-size: 150px;
 background-color:black;
 min-height: 200vh;
 color:white;

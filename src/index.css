@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
-@font-face {
-font-family: 'Chomsky';
-src: local('Chomsky.OTF'), url(fonts/Chomsky.otf) format('opentype');
-}
+
 
 body {
   margin: 0;

@@ -17,6 +17,7 @@ class Sketch extends React.Component {
     // Global Variables //////////////////////////////////////////////////////////////////////
     let queue = [];
     let keywords = [];
+    let urls = []; 
     let apiKey = 'api-key=QAxdBlc0xuqLooRSPDBfuLaec4GwdRhU';
     let myFont;
     let currHeadline;
@@ -25,7 +26,6 @@ class Sketch extends React.Component {
     let q = 0;
     let tintFlag = false;
     let bottomBuffer;
-    let topBuffer;
     let strings;
     let results,
       line;
@@ -54,7 +54,8 @@ class Sketch extends React.Component {
       leadY:p.windowHeight,
       title: "The most shared articles on Facebook are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/shared/1/facebook.json?" + apiKey,
-      img: "mark.png",
+      img: "https://i.ibb.co/3z4YSSm/mark.png",
+      articleUrls: [],
       tinted: false,
       results: [],
       flag: false,
@@ -68,7 +69,8 @@ class Sketch extends React.Component {
       leadY:p.windowHeight/2,
       title: "The most emailed articles are",
       apiUrl: "https://api.nytimes.com/svc/mostpopular/v2/emailed/1.json?" + apiKey,
-      img: "mickey.png",
+      img: "https://i.ibb.co/b7q377X/mickey.png",
+      articleUrls: [],
       tinted: false,
       results: [],
       flag: false,
@@ -84,21 +86,22 @@ class Sketch extends React.Component {
     p.setup = () => {
       p.createCanvas(p.windowWidth, p.windowHeight / 1.9);
       p.fill(255)
-      p.textSize(60)
+  
+    
       p.text("<-- EMAILS", emailRes.leadX, emailRes.LeadY);
       p.text(" FACEBOOK --> ", facebookRes.leadX, facebookRes.leadY)
       bottomBuffer = p.createGraphics(p.windowWidth / 1.5, p.windowHeight / 10); //size
       // topBuffer = p.createGraphics(p.windowWidth / 5, p.windowHeight / 4);
     };
     p.preload = () => {
-      console.log(apiKey);
+    
       // Preloading the section with question & buttons
       mickey = p.loadImage(emailRes.img);
       mark = p.loadImage(facebookRes.img);
-      myFont = p.loadFont('Chomsky.otf');
       // API CALLS -> Response -> JSON -> Success -> Extract Data  Fail -> Console.log Err
       fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
       fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
+        myFont = p.loadFont('Chomsky.otf')
     };
     p.draw = () => {
         drawKeywords();
@@ -110,16 +113,16 @@ class Sketch extends React.Component {
     // Functions /////////////////////////////////////////////////////////////////////////
 
     function drawKeywords() {
+      
       const bb = p.image(bottomBuffer, p.width / 5, 0); // location of buffer
-      p.textSize(12)
-       // p.text('The Topics We Consume',p.width/2.3,10)
-      bottomBuffer.textFont(myFont);
+     
       bottomBuffer.background(0);
       bottomBuffer.fill(255);
       bottomBuffer.textSize(bottomBuffer.width / 17);
-      bottomBuffer.textFont(myFont)
+    
       if (q < 90) {
-        q=p.floor(p.mouseX/20);
+        bottomBuffer.textFont(myFont)
+        q= p.floor(p.mouseX/20);
         bottomBuffer.background(0);
         //location of buffer
         currHeadline = bottomBuffer.text(keywords[q], bottomBuffer.width / 12, bottomBuffer.height / 1.5);
@@ -139,7 +142,6 @@ class Sketch extends React.Component {
     // If image is hovered over load the results, tint image, and remove keyword instance -> Then print the other results after 2.5 secs.
     function overImage() {
 
-
       p.textFont();
       let overMickey = p.mouseX > 0 && p.mouseX < p.width / 6 && p.mouseY > 0 && p.mouseY < p.windowHeight / 3.3;
       let overMark = p.mouseX > p.width / 1.1 && p.mouseY > p.height / 3 && p.mouseY < p.height;
@@ -148,7 +150,6 @@ class Sketch extends React.Component {
         loadEmailResults();
         tintOtherImg();
         p.removeElements();
-        // bb.hide();
         setTimeout(printAQueue, 2500);
         p.removeElements();
         p.image(mark, markImg.x, markImg.y, markImg.width, markImg.height);
@@ -193,17 +194,18 @@ class Sketch extends React.Component {
     function getHeadlines() {
       for (let i = 0; i < 10; i++) {
         emailRes.queue[i] = emailRes.results[i].title;
+        emailRes.articleUrls[i] = emailRes.results[i].urls
         facebookRes.queue[i] = facebookRes.results[i].title;
+        facebookRes.articleUrls[i] = emailRes.results[i].urls
       }
     }
     // Printing Animation : Create Space Between Headlines, and style text if even/odd.
     function printQueue() {
       p.fill(255);
-      p.textSize(30);
-      p.textSize(15);
+      p.textSize(bottomBuffer.width/87);
       if (i < 10) {
         if (emailRes.flag) {
-          emailRes.y = emailRes.y + 25;
+          emailRes.y = emailRes.y + bottomBuffer.height/4;
         }
         if (facebookRes.flag) {
           facebookRes.y = facebookRes.y + 25;
@@ -227,10 +229,9 @@ class Sketch extends React.Component {
     function printAQueue() {
       p.loop();
       p.fill(255);
-      p.textSize(30);
-      p.textSize(15);
+      p.textSize(bottomBuffer.width/87);
       if (k < 10) {
-        facebookRes.y = facebookRes.y + 25;
+        facebookRes.y = facebookRes.y + bottomBuffer.height/4;
         emailRes.y = emailRes.y + 25;
         if (k % 2 === 0 || k === 0) {
           p.fill(245, 100, 104);
@@ -262,8 +263,10 @@ class Sketch extends React.Component {
 
     // Iterating through each article, and inside the nested array & pushing it into keywords arr
     function getKeywords() {
+     
       for (let i = 0; i < emailRes.results.length; i++) {
         strings = emailRes.results[i].des_facet;
+        console.log(emailRes.results[i].urls)
         for (let j = 0; j < emailRes.results.length; j++) {
           if (emailRes.results[i].des_facet[j]) {
             keywords.push(emailRes.results[i].des_facet[j]);
@@ -293,10 +296,5 @@ class Sketch extends React.Component {
   }
 }
 
-// <ul>
-//
-//          {this.state.ingredients.map(
-//            (value ,index) => <li> { '# '}{ value }</li>)}
-//          </ul>
 
 export default Sketch;
