@@ -98,10 +98,11 @@ class Sketch extends React.Component {
       // Preloading the section with question & buttons
       mickey = p.loadImage(emailRes.img);
       mark = p.loadImage(facebookRes.img);
+      myFont = p.loadFont('Chomsky.otf')
       // API CALLS -> Response -> JSON -> Success -> Extract Data  Fail -> Console.log Err
       fetch(emailRes.apiUrl).then(response => response.json()).then(emailJSONtoData).catch(err => console.log('error'));
       fetch(facebookRes.apiUrl).then(response => response.json()).then(fbJSONtoData).catch(err => console.log('error communicating with api'));
-        myFont = p.loadFont('Chomsky.otf')
+
     };
     p.draw = () => {
         drawKeywords();
